@@ -7,7 +7,7 @@ def err(m):
     print("Error: " + m); sys.exit(1)
 
 if len(args) < 2:
-    err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] # write tickets going no-where for single universe")
+    err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe")
 
 N = 0
 HzR = 4.
@@ -15,6 +15,7 @@ sizeF = 1.5
 mF = 2.6
 RedDays = 11.2
 N_infect = 5
+N_simulation = 64
 
 try: N = int(args[1])
 except: err("pop size needs to be a whole number")
@@ -33,6 +34,9 @@ except: RedDays = 11.2
 
 try: N_infect = int(args[6])
 except: N_infect = 5
+
+try: N_simulation = int(args[7])
+except: N_simulation = 64
 
 pfn = 'pop' + str(N) +'.csv'
 f = open(pfn, 'wb')
@@ -78,6 +82,9 @@ f.close()
 
 for fn in [pfn, par_fn, cfn]:
     a = os.system('python3 csv2json.py ' + fn)
-a = os.system('Rscript run.R > run.txt')
-a = os.system('grep prob= run.txt > run.log')
-a = os.system('python3 parse.py run.log')
+
+f = open('simulation_jobs.txt', 'wb')
+for i in range(N_simulations):
+    f.write(('Rscript run.R > run' + str(i) + '.txt\n').encode())
+f.close()
+
