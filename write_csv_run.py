@@ -77,7 +77,7 @@ for i in range(N_infect):
 f.close()
 
 for fn in [pfn, par_fn, cfn]:
-    a = os.system('python3 csv_to_json.py ' + fn)
+    a = os.system('python3 csv2json.py ' + fn)
 a = os.system('Rscript run.R > run.txt')
 a = os.system('grep prob= run.txt > run.log')
 a = os.system('python3 parse.py run.log')
