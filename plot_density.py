@@ -100,7 +100,7 @@ for f in files: # accumulate values for each file
         idx_x, idx_y = min(idx_x, x_inc - 1), min(idx_y, y_inc - 1)
         count[y_inc - idx_y - 1, idx_x] += 1. # y axis is flipped
 
-lab = "infected" # ["green","yellow","blue","red","orange"]
+lab = "Number of Infected" # ["green","yellow","blue","red","orange"]
 plt.figure(figsize=(16, 12))
 plt.imshow(count)
 X = np.array(range(max_N)) / x_skip
@@ -110,6 +110,6 @@ plt.plot(X, mx/y_skip - (mean - stdv)/y_skip, color='blue', label='mean - sigma'
 plt.legend()
 plt.xlabel('generation (rescaled)')
 plt.ylabel('infected')
-plt.title(lab + " (N=" + str(len(files)) + ") NB need to check if sims finish") # still need to adjust scales..
+plt.title(lab + " (N=" + str(len(files)) + " runs) NB need to check if sims finish") # still need to adjust scales..
 plt.tight_layout()
 plt.savefig('_'.join(["density"] + arguments + [lab]) + ".png")
