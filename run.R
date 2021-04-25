@@ -1,5 +1,5 @@
-# essential reading:
-#   https://cran.r-project.org/web/packages/V8/vignettes/v8_intro.html
+# run CovidSIM from R using v8 interpreter
+# essential reading: https://cran.r-project.org/web/packages/V8/vignettes/v8_intro.html
 
 library(Rcpp)
 library(V8)
