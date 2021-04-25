@@ -5,7 +5,11 @@ import matplotlib.pyplot as plt
 import scipy.integrate
 odeint = scipy.integrate.odeint
 
-def ode_model(z, t, beta, sigma, gamma): # ODE model
+def ode_model(z, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
+              t, # time
+              beta, # parameter that converts S into E
+              sigma, # paramter that converts E into I
+              gamma): # parameter that converts I into R
     """ Reference https://www.idmod.org/docs/hiv/model-seir.html"""
     S, E, I, R = z
     N = S + E + I + R
@@ -59,5 +63,6 @@ references:
 [1] https://towardsdatascience.com/simulating-compartmental-models-in-epidemiology-using-python-jupyter-widgets-8d76bdaff5c2
 [2] https://towardsdatascience.com/infectious-disease-modelling-beyond-the-basic-sir-model-216369c584c4
 [3] https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model
+[4] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7277829/
 
 '''
