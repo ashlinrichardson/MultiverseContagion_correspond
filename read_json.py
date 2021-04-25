@@ -1,3 +1,4 @@
+# simple script to show contents of a json file
 import sys
 import json
 args = sys.argv
@@ -8,4 +9,4 @@ if len(args) < 2:
 d = json.load(open(args[1]))
 
 for k in d:
-    print(k, d[k])
+    print('key: ' + str([k]) + ' value: ' + str([d[k]]))
