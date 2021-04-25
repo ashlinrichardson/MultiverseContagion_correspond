@@ -88,3 +88,4 @@ for i in range(N_simulation):
     f.write(('Rscript run.R > run' + str(i) + '.txt\n').encode())
 f.close()
 
+a = os.system('python3 multicore.py simulation_jobs.txt')
