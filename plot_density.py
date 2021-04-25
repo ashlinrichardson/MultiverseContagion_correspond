@@ -75,6 +75,12 @@ for f in files:
 for i in range(max_N):
     mean[i] /= len(files) # divide by N for average
 
+f = open('mean.csv', 'wb')
+f.write((str(mean[0])).encode())
+for i in range(1, max_N):
+    f.write(('\n' + str(mean[i])).encode())
+f.close()
+
 stdv = [np.std([value[f][i] for f in files]) for i in range(max_N)]
 
 print("accumulate.........")
