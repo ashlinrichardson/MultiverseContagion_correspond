@@ -1,3 +1,4 @@
+# parse console.log and plot # infected vs. generation
 import os
 import sys
 import matplotlib.pyplot as plt
