@@ -74,7 +74,7 @@ y_skip = 2 # 5.
 y_inc = int(math.ceil(mx / y_skip))
 x_skip = (6. / 8.) * max_N / y_inc
 x_inc = int(math.ceil(max_N / x_skip))
-count = np.zeros((y_inc, x_inc)) #  for i in range(5)
+count = np.zeros((y_inc, x_inc)) # count[k] for k in range(0,5)
 
 print("files", files)
 
@@ -82,23 +82,21 @@ for f in files: # accumulate values for each file
     print(f)
     for i in range(max_N):
         v = 0
-        try: v = value[f][i]
-        except: pass
-        # print("v,i", v, i)
+        try:
+            v = value[f][i]
+        except:
+            pass
         idx_y = math.floor((v + (y_skip / 2.)) / y_skip)
         idx_x = math.floor((i + (x_skip / 2.)) / x_skip)
         idx_x, idx_y = max(idx_x, 0), max(idx_y, 0)
         idx_x, idx_y = min(idx_x, x_inc - 1), min(idx_y, y_inc - 1)
-        # print("idx", idx_x, "idy", idx_y, "xinc", x_inc, "yinc", y_inc)
         count[y_inc - idx_y - 1, idx_x] += 1. # y axis is flipped
 
 lab = "infected" # ["green","yellow","blue","red","orange"]
-#for k in range(len(lab)):
 plt.figure(figsize=(16, 12))
-# plt.rcParams['axes.facecolor'] = 'black'
 plt.imshow(count)
 print(count.shape)
 print(count)
-plt.title(lab + " N=" + str(len(files))) # + " (still need to adjust scales..)")
+plt.title(lab + " N=" + str(len(files))) # still need to adjust scales..
 plt.tight_layout()
 plt.savefig('_'.join(["density"] + arguments + [lab]) + ".png")
