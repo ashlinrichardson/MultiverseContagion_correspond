@@ -7,24 +7,35 @@ def err(m):
     print("Error: " + m); sys.exit(1)
 
 if len(args) < 2:
-    err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] # write tickets going no-where for single universe")
+    err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] # write tickets going no-where for single universe")
 
 N = 0
 HzR = 4.
 sizeF = 1.5
 mF = 2.6
 RedDays = 11.2
+N_infect = 5
 
 try: N = int(args[1])
 except: err("pop size needs to be a whole number")
 
-if len(args) > 2: HzR = float(args[2])
-if len(args) > 3: sizeF = float(args[3])
-if len(args) > 4: mF = float(args[4])
-if len(args) > 5: RedDays = float(args[5])
+try: HzR = float(args[2])
+except: HzR = 4.
 
-fn = 'pop' + str(N) +'.csv'
-f = open(fn, 'wb')
+try: sizeF = float(args[3])
+except: sizeF = 1.5
+
+try: mF = float(args[4])
+except: mF = 2.6
+
+try: RedDays = float(args[5])
+except: RedDays = 11.2
+
+try: N_infect = int(args[6])
+except: N_infect = 5
+
+pfn = 'pop' + str(N) +'.csv'
+f = open(pfn, 'wb')
 
 def w(f, s):
     f.write(s.encode())
@@ -41,32 +52,32 @@ for i in range(N):
         d = d + ['']
 
     w(f, ((','.join(d)) + "\r\n"))
+f.close()
 
-
-f = open('param.csv', 'wb')
+par_fn = 'param.csv'
+f = open(par_fn, 'wb')
 w(f, 'Parameters,,\n')
 w(f, 'population,' + str(N) + ',\n')
 w(f, 'UN,1,Universe\n')
-w(f, 'HzR,4,\n')
-w(f, 'sizeF,1.5,0\n')
-w(f, 'mF,2.6,0\n')
-w(f, 'RedDays,11.2,\n')
+w(f, 'HzR,' + str(HzR) + ',\n')
+w(f, 'sizeF,' + str(sizeF) + ',0\n')
+w(f, 'mF,' + str(mF) + ',0\n')
+w(f, 'RedDays,' + str(RedDays) + ',\n')
 w(f, 'pop file,pop' + str(N) + '.json,\n')
-w(f, 'case file,case5.json,\n')
-w(f, 'STOP,350,\n')
+w(f, 'case file,case' + str(N_infect) + '.json,\n')
+w(f, 'STOP,2000,\n')
 f.close()
 
-f = open('case5.csv', 'wb')
+cfn = 'case' + str(N_infect) + '.csv'
+f = open(cfn, 'wb')
 w(f, '''Cases,,,,,,
-pID,age-Gp,comb-risk,VL,postInfD,role,minglx
-0,1,3,2.6,2.2,R,1
-1,1,3,2.6,2.2,R,1
-2,1,3,2.6,2.2,R,1
-3,1,3,2.6,2.2,R,1
-4,1,3,2.6,2.2,R,1''')
+pID,age-Gp,comb-risk,VL,postInfD,role,minglx''')
+for i in range(N_infect):
+    w(f, '\n' + str(i) + ',1,3,2.6,2.2,R,1')
 f.close()
 
-a = os.system('python3 csv_to_json.py')
+for fn in [pfn, par_fn, cfn]:
+    a = os.system('python3 csv_to_json.py ' + fn)
 a = os.system('Rscript run.R > run.txt')
 a = os.system('grep prob= run.txt > run.log')
 a = os.system('python3 parse.py run.log')
