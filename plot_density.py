@@ -50,6 +50,7 @@ mx = 0
 value = {} # tuple indexed by file, then time
 print('max_T', max_N) # max number of gen
 
+mean = np.zeros(max_N)
 for f in files:
     value[f] = np.zeros(max_N)
     data = d[f]  # time series for this file
@@ -68,6 +69,13 @@ for f in files:
             value[f][i] = nz
         else:
             err('number of infected should be positive')
+
+        mean[i] += value[f][i] # contribution to mean
+
+for i in range(max_N):
+    mean[i] /= len(files) # divide by N for average
+
+stdv = [np.std([value[f][i] for f in files]) for i in range(max_N)]
 
 print("accumulate.........")
 y_skip = 2 # 5.
@@ -95,8 +103,13 @@ for f in files: # accumulate values for each file
 lab = "infected" # ["green","yellow","blue","red","orange"]
 plt.figure(figsize=(16, 12))
 plt.imshow(count)
-print(count.shape)
-print(count)
-plt.title(lab + " N=" + str(len(files))) # still need to adjust scales..
+X = np.array(range(max_N)) / x_skip
+plt.plot(X, mx/y_skip -          mean/y_skip, color='red', label='mean')
+plt.plot(X, mx/y_skip - (mean + stdv)/y_skip, color='green', label='mean + sigma')
+plt.plot(X, mx/y_skip - (mean - stdv)/y_skip, color='blue', label='mean - sigma') 
+plt.legend()
+plt.xlabel('generation (rescaled)')
+plt.ylabel('infected')
+plt.title(lab + " (N=" + str(len(files)) + ") NB need to check if sims finish") # still need to adjust scales..
 plt.tight_layout()
 plt.savefig('_'.join(["density"] + arguments + [lab]) + ".png")
