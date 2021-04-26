@@ -9,13 +9,15 @@ def err(m):
 if len(args) < 2:
     err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe")
 
-N = 0
-HzR = 4.
-sizeF = 1.5
-mF = 2.6
-RedDays = 11.2
-N_infect = 5
-N_simulation = 512
+a = os.system("Rscript run.R") # make sure C program is compiled!
+
+N = None
+HzR = None
+sizeF = None
+mF = None
+RedDays = None
+N_infect = None
+N_simulation = None
 
 try: N = int(args[1])
 except: err("pop size needs to be a whole number")
@@ -36,7 +38,7 @@ try: N_infect = int(args[6])
 except: N_infect = 5
 
 try: N_simulation = int(args[7])
-except: N_simulation = 64
+except: N_simulation = 512
 
 pfn = 'pop' + str(N) +'.csv'
 f = open(pfn, 'wb')
