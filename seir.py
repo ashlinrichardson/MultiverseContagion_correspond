@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import scipy.integrate
 odeint = scipy.integrate.odeint
 
+def read_lines(fn): # specific rendition of readlines()
+    return [x.strip() for x in open(fn).read().strip().split('\n')]
+
 def ode_model(z, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
               t, # time
               beta, # parameter that converts S into E
@@ -26,6 +29,13 @@ def ode_solver(t, initial_conditions, params): # ODE solver
     res = odeint(ode_model, [initS, initE, initI, initR], t, args=(beta, sigma, gamma))
     return res
 
+def integrate(x, dt=1):
+    result, i = [], 0
+    for j in range(0, len(x)):
+        i += (x[j] * dt)
+        result.append(i)
+    return result
+
 def main(initN=1380000000, initE=1, initI=1, initR=0, initD=0, sigma=1/5.2, gamma=1/2.9, mu=0.034, R0=4., days=200):
     beta = R0 * gamma
     initial_conditions = [initE, initI, initR, initN]
@@ -33,17 +43,40 @@ def main(initN=1380000000, initE=1, initI=1, initR=0, initD=0, sigma=1/5.2, gamm
     tspan = np.arange(0, days, 1)
     sol = ode_solver(tspan, initial_conditions, params)
     S, E, I, R = sol[:, 0], sol[:, 1], sol[:, 2], sol[:, 3]
-
     t = tspan
+    return [t, S, E, I, R]
+
+def plots(initN, t, S, E, I, R, mean):
     plt.plot(t, S, label='Susceptible')
     plt.plot(t, E, label='Exposed')
+    print("E", E)
     plt.plot(t, I, label='Infected')
     plt.plot(t, R, label='Recovered')
+    dt = t[1] - t[0]
+    plt.plot(t, initN - S, label='Infections') # this is what we will correlate with ABM for now..
+    plt.plot(t, mean, label='ABM mean')
     plt.legend()
     plt.savefig("seir.png")
 
+def init_abm(): # guess at initializing SEIR from Agent Based Model
+    S = 0
+    lines = read_lines('param.csv') # get population guess from param.csv
+    for line in lines:
+        w = line.split(',')
+        if w[0] == 'population':
+            S = float(w[1])
 
-main() 
+    print("S=", S) # guess at S
+    lines = read_lines('mean.csv') # get number of generations from abm mean file
+    days = float(len(lines))
+    mean = [float(x) for x in lines]
+
+
+    t, S, E, I, R = main(initN=S, days=days)
+    plots(S, t, S, E, I, R, mean)
+    
+
+init_abm()
 
 '''
 interact(main,
