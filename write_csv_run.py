@@ -15,7 +15,7 @@ sizeF = 1.5
 mF = 2.6
 RedDays = 11.2
 N_infect = 5
-N_simulation = 64
+N_simulation = 512
 
 try: N = int(args[1])
 except: err("pop size needs to be a whole number")
