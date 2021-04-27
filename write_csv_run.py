@@ -23,22 +23,22 @@ try: N = int(args[1])
 except: err("pop size needs to be a whole number")
 
 try: HzR = float(args[2])
-except: HzR = 4.
+except: HzR = .85
 
 try: sizeF = float(args[3])
 except: sizeF = 1.5
 
 try: mF = float(args[4])
-except: mF = 2.6
+except: mF = 0.75
 
 try: RedDays = float(args[5])
-except: RedDays = 11.2
+except: RedDays = 9.4 # 11.2
 
 try: N_infect = int(args[6])
 except: N_infect = 5
 
 try: N_simulation = int(args[7])
-except: N_simulation = 512
+except: N_simulation = 128
 
 pfn = 'pop' + str(N) +'.csv'
 f = open(pfn, 'wb')

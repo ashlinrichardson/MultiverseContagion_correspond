@@ -5,7 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 args = sys.argv
 
-def err(m): print('Error: ' + m); sys.exit(1)
+def err(m):
+    print('Error: ' + m); sys.exit(1)
 
 arguments = args[1:] # for this script the arguments are only used to create the filename
 
@@ -84,7 +85,7 @@ f.close()
 stdv = [np.std([value[f][i] for f in files]) for i in range(max_N)]
 
 print("accumulate.........")
-y_skip = 2 # 5.
+y_skip = 2. # 2 # 5.
 y_inc = int(math.ceil(mx / y_skip))
 x_skip = (6. / 8.) * max_N / y_inc
 x_inc = int(math.ceil(max_N / x_skip))
@@ -118,4 +119,4 @@ plt.xlabel('generation (rescaled)')
 plt.ylabel('infected')
 plt.title(lab + " (N=" + str(len(files)) + " runs) NB need to check if sims finish") # still need to adjust scales..
 plt.tight_layout()
-plt.savefig('_'.join(["density"] + arguments + [lab]) + ".png")
+plt.savefig('_'.join(["density"] + arguments + [lab]).replace(" ", "_") + ".png")
