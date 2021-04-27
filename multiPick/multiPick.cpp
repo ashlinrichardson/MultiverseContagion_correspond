@@ -9,7 +9,7 @@
 #include"misc.h"
 #include<unordered_set>
 
-#define SPHERE_SIZE 1.
+#define SPHERE_SIZE 0.01
 
 /* Where the simulation data will go */
 vector<str> my_lines; // ssv data
@@ -23,8 +23,9 @@ vector<float> ball_x;
 vector<float> ball_y;
 vector<float> ball_z;
 
-/* Draw axes */
 int SHIFT_KEY;
+vec3d rX; // relative point
+
 #define STARTX 700
 #define STARTY 700
 int fullscreen;
@@ -36,13 +37,20 @@ int console_position;
 int renderflag;
 
 void _pick(GLint name){
+  int ci;
   cout << "PickSet:";
   std::set<GLint>::iterator it;
   for(it=myPickNames.begin(); it!=myPickNames.end(); it++){
     cout << *it << "," ;
+    ci = *it;
   }
   cout << endl;
   fflush(stdout);
+
+  if(SHIFT_KEY){
+    rX = vec3d(ball_x[ci], ball_y[ci], ball_z[ci]);
+    cout << "rX: " << ball_x[name] << " " << ball_y[name] << " " << ball_z[name] << endl;
+  }
 }
 
 void renderBitmapString(float x, float y, void *font, char *string){
@@ -95,16 +103,14 @@ class point{
 
 void drawArrow(vec3d x1, vec3d x2){
   /* y1, y2-- start and end positions at which to plot arrow.. */
-  //vec3d x1(y1);
-  //vec3d x2(y2);
   float arrowLength = SPHERE_SIZE;
   float takeOff = 0.;
-  vec3d Mx1(x1);//-rx);//(parentglWindow->rX)); //arrow start vector..
-  vec3d Mx2(x2);//-rx);//(parentglWindow->rX));//..arrow end vector.
+  vec3d Mx1(x1 - rX);
+  vec3d Mx2(x2 - rX);
   vec3d dx(Mx2-Mx1);
   float len = dx.length();
   vec3d dxS( dx / len);
-  float beginAtSize = 0.;//parentglWindow->sphereSize;
+  float beginAtSize = 0.;
   Mx1 = Mx1 + (dxS * beginAtSize);
 
   /* the arrow line */
@@ -114,7 +120,6 @@ void drawArrow(vec3d x1, vec3d x2){
   Mx1.vertex(); Mx2.vertex();
   glEnd();
   glPopMatrix();
-  //if(pushName) glPopName();
 
   /* the arrow head */
   dx= dx *((len-takeOff)/len);
@@ -175,7 +180,7 @@ void drawAxes(void){
     if(connected.count(i)){
     glPushMatrix();
     glPushName(i);
-    glTranslatef( ball_x[i], ball_y[i], ball_z[i]);
+    glTranslatef( ball_x[i] - rX.x, ball_y[i] - rX.y, ball_z[i] - rX.z);
     glColor3f(1,1,0);
 
     if(myPickNames.count(i)) glColor3f(0,1,1);
@@ -370,13 +375,40 @@ int main(int argc, char *argv[]){
     ball_z.push_back((float)infection_gen[infected[i]]);
   }
 
+  // scale data!
+  float xmin, xmax, ymin, ymax, zmin, zmax;
+  xmax = ymax = zmax = FLT_MIN;
+  xmin = ymin = zmin = FLT_MAX;
+  for0(i, maxI + 1){
+    float bx = ball_x[i];
+    float by = ball_y[i];
+    float bz = ball_z[i];
+    if(bx < xmin) xmin = bx;
+    if(by < ymin) ymin = by;
+    if(bz < zmin) zmin = bz;
+
+    if(bx > xmax) xmax = bx;
+    if(by > ymax) ymax = by;
+    if(bz > zmax) zmax = bz;
+  }
+
+  for0(i, maxI + 1){
+    float bx = ball_x[i];
+    float by = ball_y[i];
+    float bz = ball_z[i];
+
+    ball_x[i] = (bx - xmin) / (xmax - xmin);
+    ball_y[i] = (by - ymin) / (ymax - ymin);
+    ball_z[i] = (bz - zmin) / (zmax - zmin);
+  }
+
+
+
   pick = _pick;
   printf("main()\n");
   renderflag = false;
   a1=a2=a3=1;
   console_position = 0;
-  //Py_Initialize();
-  //printf("Py_init()\n");
 
   fullscreen=0;
 
@@ -407,12 +439,10 @@ int main(int argc, char *argv[]){
   glScalef(0.25,0.25,0.25);
 
   /* Configure ZPR module */
-  // zprInit();
   zprSelectionFunc(drawAxes); /* Selection mode draw function */
   zprPickFunc(pick); /* Pick event client callback */
 
   /* Initialise OpenGL */
-
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
