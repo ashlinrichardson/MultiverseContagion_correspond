@@ -16,6 +16,7 @@ vector<str> my_lines; // ssv data
 vector<int> infected;
 vector<int> infector;
 map<int, int> my_infector;
+map<int, int> infection_gen;
 unordered_set<int> connected;
 
 vector<float> ball_x;
@@ -23,6 +24,7 @@ vector<float> ball_y;
 vector<float> ball_z;
 
 /* Draw axes */
+int SHIFT_KEY;
 #define STARTX 700
 #define STARTY 700
 int fullscreen;
@@ -215,6 +217,7 @@ void quitme(){
 
 /* Keyboard functions */
 void keyboard(unsigned char key, int x, int y){
+  printf("key: %c %d\n", key, (int)key);
   switch(key){
     // Backspace
 
@@ -281,6 +284,16 @@ void keyboard(unsigned char key, int x, int y){
   }
 }
 
+/* Keyboard functions */
+void special(int key, int x, int y){
+  printf("special key: %c %d\n", (char)key, (int)key);
+  if(key ==112){
+    SHIFT_KEY = !SHIFT_KEY;
+    cout << "SHIFT " << SHIFT_KEY << endl;
+  }
+
+}
+
 static GLfloat light_ambient[] = {
 0.0, 0.0, 0.0, 1.0 };
 static GLfloat light_diffuse[] = {
@@ -309,6 +322,7 @@ void idle(){
 }
 
 int main(int argc, char *argv[]){
+  SHIFT_KEY = false;
   vector<vector<string>> output;
   FILE * f = fopen(argv[1], "rb");
   char buffer[2048];
@@ -323,6 +337,7 @@ int main(int argc, char *argv[]){
     cout << words << endl;
     str line_infected(words[2]);
     str line_infector(words[5]);
+    str line_gen(words[7]);
 
     vector<str> w_infected(split(line_infected, ':'));
     vector<str> w_infector(split(line_infector, ':'));
@@ -341,6 +356,8 @@ int main(int argc, char *argv[]){
 
     my_lines.push_back(line);
     my_line[infected_i] = line;
+
+    infection_gen[infected_i] = atoi(&((line_gen.c_str())[3]));
   }
   int i;
   for0(i, maxI + 1){
@@ -350,7 +367,7 @@ int main(int argc, char *argv[]){
     if(my_infector.count(i) > 0) inf_i = my_infector[i];
 
     ball_y.push_back((float)(inf_i));
-    ball_z.push_back(0.);
+    ball_z.push_back((float)infection_gen[infected[i]]);
   }
 
   pick = _pick;
@@ -381,6 +398,8 @@ int main(int argc, char *argv[]){
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
+  glutSpecialFunc(special);
+  glutSpecialUpFunc(special);
   // glutKeyboardUpFunc(keyboardup);
 
   glutIdleFunc(idle);
