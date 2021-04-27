@@ -23,7 +23,7 @@ vector<float> ball_x;
 vector<float> ball_y;
 vector<float> ball_z;
 
-int SHIFT_KEY;
+int SHIFT_KEY; // flag for shift key active! switch reference point!
 vec3d rX; // relative point
 
 #define STARTX 700
