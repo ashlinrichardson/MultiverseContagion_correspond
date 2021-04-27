@@ -38,7 +38,6 @@ int renderflag;
 
 void _pick(GLint name){
   int ci;
-  cout << "PickSet:";
   std::set<GLint>::iterator it;
   for(it=myPickNames.begin(); it!=myPickNames.end(); it++){
     cout << *it << "," ;
@@ -46,11 +45,7 @@ void _pick(GLint name){
   }
   cout << endl;
   fflush(stdout);
-
-  if(SHIFT_KEY){
-    rX = vec3d(ball_x[ci], ball_y[ci], ball_z[ci]);
-    cout << "rX: " << ball_x[name] << " " << ball_y[name] << " " << ball_z[name] << endl;
-  }
+  if(SHIFT_KEY) rX = vec3d(ball_x[ci], ball_y[ci], ball_z[ci]);
 }
 
 void renderBitmapString(float x, float y, void *font, char *string){
