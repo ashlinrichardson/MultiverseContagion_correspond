@@ -1,6 +1,8 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares
 # [1] https://www.nature.com/articles/s41598-020-76563-8
 # according to [1] the infections are always a pulse that have a peak!
+
+# note: we are fitting onto infected. we should be fitting onto 1-susceptible!
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate, optimize
