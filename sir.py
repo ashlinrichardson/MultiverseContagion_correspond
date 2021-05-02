@@ -22,7 +22,8 @@ def sir_model(y, x, beta, gamma):
     return S, I, R
 
 def fit_odeint(x, beta, gamma):
-    return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,1] # fit on infections
+    return N - integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,0] # fit on infections
+
 
 N = 500
 I0 = ydata[0] 
