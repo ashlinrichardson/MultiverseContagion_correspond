@@ -36,6 +36,8 @@ beta, gamma = popt
 R0 = beta / gamma 
 print("beta", beta, "gamma", gamma, "R0", R0)
 
-plt.plot(xdata, ydata, 'o')
-plt.plot(xdata, fitted)
+plt.plot(xdata, ydata, 'o', label="data")
+plt.plot(xdata, fitted, label="SIR model")
+
+plt.legend()
 plt.show()
