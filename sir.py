@@ -32,6 +32,10 @@ R0 = 0.0
 popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
 fitted = fit_odeint(xdata, *popt)
 
+beta, gamma = popt
+R0 = beta / gamma 
+print("beta", beta, "gamma", gamma, "R0", R0)
+
 plt.plot(xdata, ydata, 'o')
 plt.plot(xdata, fitted)
 plt.show()
