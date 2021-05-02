@@ -1,0 +1,10 @@
+Parameters,,
+population,500,
+UN,1,Universe
+HzR,0.85,
+sizeF,1.5,0
+mF,0.75,0
+RedDays,9.4,
+pop file,pop500.json,
+case file,case5.json,
+STOP,2000,
