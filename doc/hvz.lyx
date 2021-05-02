@@ -1,0 +1,550 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Humans vs Zombies (HvZ)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{dx}{dt}=-\alpha xy
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{dy}{dt}=\alpha xy
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solution with unknowns 
+\begin_inset Formula $c_{1},$
+\end_inset
+
+ 
+\begin_inset Formula $c_{2}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y(t)=\frac{c_{1}}{e^{\alpha c_{1}t+c_{2}c_{1}}-1}+c_{1}=f(t)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x(t)=-\frac{c_{1}}{e^{\alpha c_{1}t+c_{2}c_{1}}-1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Verify solution:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{dy}{dt}=-\frac{\alpha c_{1}^{2}e^{\alpha c_{1}t+c_{2}c_{!}}}{\big(e^{\alpha c_{1}t+c_{1}c_{2}}-1\big)^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{dx}{dt}=\frac{\alpha c_{1}^{2}e^{\alpha c_{1}t+c_{2}c_{!}}}{\big(e^{\alpha c_{1}t+c_{1}c_{2}}-1\big)^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\square$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Least-squares fit to data 
+\begin_inset Formula $y(t_{i})=y_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{\alpha,c_{1},c_{2}}{min}\underset{i}{\sum}\big(f(t_{i})-y_{i}\big)^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Normal equations:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\frac{\partial}{\partial a}\big(f(t_{i})-y_{i}\big)^{2}=-\underset{i}{\sum}\frac{2c_{1}^{2}t_{i}e^{\alpha c_{1}t_{i}+c_{2}c_{1}}\big(\frac{c_{1}}{e^{\alpha c_{1}t_{i}+c_{2}c_{1}}-1}+c_{1}-y_{i}\big)}{\big(e^{\alpha c_{1}t_{i}+c_{2}c_{1}}-1)^{2}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\frac{\partial}{\partial c_{1}}\big(f(t_{i})-y_{i}\big)^{2}=2\underset{i}{\sum}\bigg(\frac{c_{1}(\alpha t_{i}+c_{2})e^{\alpha t_{i}c_{1}+c_{2}c_{1}}}{(e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1)^{2}}+\frac{1}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+1\bigg)\bigg(\frac{c_{1}}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+c_{1}+y_{i}\bigg)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\frac{\partial}{\partial c_{2}}\big(f(t_{i})-y_{i}\big)=-2\underset{i}{\sum}\frac{c_{1}^{2}e^{\alpha t_{i}c_{1}+c_{2}c_{1}}\bigg(\frac{c_{1}}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+c_{1}-y_{i}\bigg)}{\big(e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1)^{2}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Arranging:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\frac{2c_{1}^{2}t_{i}e^{\alpha c_{1}t_{i}+c_{2}c_{1}}\big(\frac{c_{1}}{e^{\alpha c_{1}t_{i}+c_{2}c_{1}}-1}+c_{1}-y_{i}\big)}{\big(e^{\alpha c_{1}t_{i}+c_{2}c_{1}}-1)^{2}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\bigg(\frac{c_{1}(\alpha t_{i}+c_{2})e^{\alpha t_{i}c_{1}+c_{2}c_{1}}}{(e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1)^{2}}+\frac{1}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+1\bigg)\bigg(\frac{c_{1}}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+c_{1}+y_{i}\bigg)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\frac{c_{1}^{2}e^{\alpha t_{i}c_{1}+c_{2}c_{1}}\bigg(\frac{c_{1}}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+c_{1}-y_{i}\bigg)}{\big(e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1)^{2}}=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}2c_{1}^{2}t_{i}e^{\alpha c_{1}t_{i}+c_{2}c_{1}}\big(\frac{c_{1}}{e^{\alpha c_{1}t_{i}+c_{2}c_{1}}-1}+c_{1}-y_{i}\big)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}\bigg(\frac{c_{1}(\alpha t_{i}+c_{2})e^{\alpha t_{i}c_{1}+c_{2}c_{1}}}{(e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1)^{2}}+\frac{1}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+1\bigg)\bigg(\frac{c_{1}}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+c_{1}+y_{i}\bigg)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\underset{i}{\sum}c_{1}^{2}e^{\alpha t_{i}c_{1}+c_{2}c_{1}}\bigg(\frac{c_{1}}{e^{\alpha t_{i}c_{1}+c_{2}c_{1}}-1}+c_{1}-y_{i}\bigg)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+[1] 28 Models Later: Model Competition and the Zombie Apocalypse (2021)
+\end_layout
+
+\begin_layout Standard
+[2] https://www.wolframalpha.com/input/?i=solve%5B%7Bx%27%28t%29%3D+-+a+*+x%28t%29
++*+y%28t%29%2C+y%27%28t%29+%3D+a+*+x%28t%29+*+y%28t%29%7D%5D
+\end_layout
+
+\begin_layout Standard
+[3] https://www.wolframalpha.com/input/?i=%28d%2Fdt%29%28+y%28t%29+%3D+c_1%2F%28e%
+5E%28a+c_1+t+%2B+c_2+c_1%29+-+1%29+%2B+c_1+%29
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x_{0}=x(0)=\frac{c_{1}}{1-e^{c_{2}c_{1}}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y_{0}=y(0)=c_{1}-x_{0}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\rightarrow c_{1}=y_{0}-x_{0}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\rightarrow c_{2}=\frac{1}{y_{0}-x_{0}}\ln\bigg(1-\frac{y_{0}-x_{0}}{x_{0}}\bigg)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $Z=e^{c_{2}c_{1}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x_{0}(1-Z)=c_{1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y_{0}(1-Z)=-c_{1}Z
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To solve for y = f(x):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y(t)=\frac{c_{1}}{e^{\alpha c_{1}t+c_{2}c_{1}}-1}+c_{1}=f(t)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+t=\frac{1}{\alpha c_{1}}\ln(1-c_{1}/x)-c_{2}c_{1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To solve for alpha:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y(0)=\frac{c_{1}}{e^{c_{2}c_{1}}-1}+c_{1}=y_{0}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y_{n}=\frac{y_{0}}{e^{\alpha y_{0}t_{n}+c_{2}y_{0}}-1}+y_{0}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y_{n}-y_{0}=\frac{y_{0}}{e^{\alpha y_{0}t_{n}+c_{2}y_{0}}-1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+e^{\alpha y_{0}t_{n}+c_{2}y_{0}}=\frac{y_{0}}{y_{n}-y_{0}}+1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\alpha y_{0}t_{n}+c_{2}y_{0}=\ln\bigg(\frac{y_{0}}{y_{n}-y_{0}}+1\bigg)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\alpha y_{0}t_{n}=\ln\bigg(\frac{y_{0}}{y_{n}-y_{0}}+1\bigg)-c_{2}y_{0}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\alpha=\frac{1}{y_{0}t_{n}}\bigg(\ln\bigg(\frac{y_{0}}{y_{n}-y_{0}}+1\bigg)-c_{2}y_{0}\bigg)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To make sense: constraint:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y(t)=\frac{c_{1}}{e^{\alpha c_{1}t+c_{2}c_{1}}-1}+c_{1}=f(t)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+e^{\alpha c_{1}t+c_{2}c_{1}}-1>0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+e^{\alpha c_{1}t+c_{2}c_{1}}>1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\alpha t+c_{2}>0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
