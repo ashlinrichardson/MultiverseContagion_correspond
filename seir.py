@@ -1,4 +1,6 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares
+# [1] https://www.nature.com/articles/s41598-020-76563-8
+# according to [1] the infections are always a pulse that have a peak!
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate, optimize
@@ -7,37 +9,68 @@ ydata = ['1e-06', '1.49920166169172e-06', '2.24595472686361e-06', '3.36377954575
 xdata = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99', '100', '101']
 '''
 infected = 5.
-ydata = [x.strip() for x in open("mean.csv").readlines()] # infected data!
+ydata = [x.strip() for x in open("mean.csv").readlines()]
 xdata = [float(x) for x in range(len(ydata))]
 
 ydata = np.array(ydata, dtype=float)
 xdata = np.array(xdata, dtype=float)
 
-ydata += infected # infected data are actuall "new infections" data..
-
+ydata += infected
+'''
 def sir_model(y, x, beta, gamma):
     S = -beta * y[0] * y[1] / N
     R = gamma * y[1]
     I = -(S + R)
     return S, I, R
+'''
 
-def fit_odeint(x, beta, gamma):
-    return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,1] # fit on infections
+def seir_model(y, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
+              x, # time
+              beta, # parameter that converts S into E
+              sigma, # paramter that converts E into I
+              gamma): # parameter that converts I into R
+    """ Reference https://www.idmod.org/docs/hiv/model-seir.html"""
+    S, E, I, R = y
+    N = S + E + I + R
+    dSdt = -beta*S*I/N
+    dEdt = beta*S*I/N - sigma*E
+    dIdt = sigma*E - gamma*I
+    dRdt = gamma*I
+    return [dSdt, dEdt, dIdt, dRdt]
+'''
+
+def ode_model(z, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
+              t, # time
+              beta, # parameter that converts S into E
+              sigma, # paramter that converts E into I
+              gamma): # parameter that converts I into R
+    """ Reference https://www.idmod.org/docs/hiv/model-seir.html"""
+    S, E, I, R = z
+    N = S + E + I + R
+    dSdt = -beta*S*I/N
+    dEdt = beta*S*I/N - sigma*E
+    dIdt = sigma*E - gamma*I
+    dRdt = gamma*I
+    return [dSdt, dEdt, dIdt, dRdt]
+'''
+def fit_odeint(x, beta, sigma, gamma):
+    return integrate.odeint(seir_model, (S0,E0, I0, R0), x, args=(beta, sigma, gamma))[:,1]
 
 N = 500
-I0 = ydata[0] 
+E0 = ydata[0]
+I0 = 0 # I0 = ydata[0] 
 S0 = N - I0
-R0 = 0.0
+R0 = 2.
 
 popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
 fitted = fit_odeint(xdata, *popt)
 
-beta, gamma = popt
+beta, sigma, gamma = popt
 R0 = beta / gamma 
-print("beta", beta, "gamma", gamma, "R0", R0)
+print("beta", beta, "gamma", gamma, "sigma", sigma, "R0", R0)
 
 plt.plot(xdata, ydata, 'o', label="data")
-plt.plot(xdata, fitted, label="SIR model")
+plt.plot(xdata, fitted, label="SEIR model")
 
 plt.legend()
 plt.show()
