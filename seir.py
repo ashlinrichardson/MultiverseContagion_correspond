@@ -56,14 +56,14 @@ def ode_model(z, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
     return [dSdt, dEdt, dIdt, dRdt]
 '''
 def fit_odeint(x, beta, sigma, gamma):
-    return integrate.odeint(seir_model, (S0,E0, I0, R0), x, args=(beta, sigma, gamma))[:,1]
+    return N - integrate.odeint(seir_model, (S0,E0, I0, R0), x, args=(beta, sigma, gamma))[:,0]
+
 
 N = 500
 E0 = ydata[0]
 I0 = 0 # I0 = ydata[0] 
 S0 = N - I0
-R0 = 2.
-
+R0 = 1.
 popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
 fitted = fit_odeint(xdata, *popt)
 
