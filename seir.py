@@ -50,8 +50,10 @@ beta, sigma, gamma = popt
 R0 = beta / gamma 
 print("beta", beta, "gamma", gamma, "sigma", sigma, "R0", R0)
 
-plt.plot(xdata, ydata, 'o', label="data")
-plt.plot(xdata, fitted, label="SEIR model")
-
+plt.plot(xdata, ydata, '+', label="data", color='b')
+plt.plot(xdata, fitted, label="SEIR model", color='r')
+plt.title("SEIR model fit to CovidSIM console.log")
+plt.xlabel('step')
+plt.ylabel('number of non-susceptible')
 plt.legend()
 plt.show()
