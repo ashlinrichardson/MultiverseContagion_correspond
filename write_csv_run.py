@@ -7,6 +7,7 @@ def err(m):
     print("Error: " + m); sys.exit(1)
 
 if len(args) < 2:
+    print("python3 write_csv_run.py 500 None None None None 5 256 # example")
     err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe")
 
 a = os.system("Rscript run.R") # make sure C program is compiled!
@@ -39,6 +40,9 @@ except: N_infect = 5
 
 try: N_simulation = int(args[7])
 except: N_simulation = 128
+
+if n_infect > N:
+    err("number of initial infections must not be greater than pop size")
 
 pfn = 'pop' + str(N) +'.csv'
 f = open(pfn, 'wb')
