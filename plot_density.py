@@ -117,6 +117,6 @@ plt.plot(X, mx/y_skip - (mean - stdv)/y_skip, color='blue', label='mean - sigma'
 plt.legend()
 plt.xlabel('generation (rescaled)')
 plt.ylabel('infected')
-plt.title(lab + " (N=" + str(len(files)) + " runs) NB need to check if sims finish") # still need to adjust scales..
+plt.title(lab + " (N=" + str(len(files)) + " runs)") # still need to adjust scales..
 plt.tight_layout()
 plt.savefig('_'.join(["density"] + arguments + [lab]).replace(" ", "_") + ".png")
