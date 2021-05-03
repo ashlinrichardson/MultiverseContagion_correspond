@@ -18,13 +18,6 @@ ydata = np.array(ydata, dtype=float)
 xdata = np.array(xdata, dtype=float)
 
 ydata += infected
-'''
-def sir_model(y, x, beta, gamma):
-    S = -beta * y[0] * y[1] / N
-    R = gamma * y[1]
-    I = -(S + R)
-    return S, I, R
-'''
 
 def seir_model(y, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
               x, # time
@@ -39,22 +32,7 @@ def seir_model(y, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
     dIdt = sigma*E - gamma*I
     dRdt = gamma*I
     return [dSdt, dEdt, dIdt, dRdt]
-'''
 
-def ode_model(z, # S, E, I, R: Susceptible, Exposed, Infectious, Recovered
-              t, # time
-              beta, # parameter that converts S into E
-              sigma, # paramter that converts E into I
-              gamma): # parameter that converts I into R
-    """ Reference https://www.idmod.org/docs/hiv/model-seir.html"""
-    S, E, I, R = z
-    N = S + E + I + R
-    dSdt = -beta*S*I/N
-    dEdt = beta*S*I/N - sigma*E
-    dIdt = sigma*E - gamma*I
-    dRdt = gamma*I
-    return [dSdt, dEdt, dIdt, dRdt]
-'''
 def fit_odeint(x, beta, sigma, gamma):
     return N - integrate.odeint(seir_model, (S0,E0, I0, R0), x, args=(beta, sigma, gamma))[:,0]
 
@@ -64,6 +42,7 @@ E0 = ydata[0]
 I0 = 0 # I0 = ydata[0] 
 S0 = N - I0
 R0 = 1.
+
 popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
 fitted = fit_odeint(xdata, *popt)
 
