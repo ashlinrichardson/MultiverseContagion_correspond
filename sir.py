@@ -1,3 +1,4 @@
+# need to read params from param.csv!!!!!
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,7 +14,7 @@ xdata = [float(x) for x in range(len(ydata))]
 ydata = np.array(ydata, dtype=float)
 xdata = np.array(xdata, dtype=float)
 
-ydata += infected # infected data are actuall "new infections" data..
+ydata += infected # ydata will refer to the number of nonsusceptible.. after adding on the initial infections
 
 def sir_model(y, x, beta, gamma):
     S = -beta * y[0] * y[1] / N
@@ -22,10 +23,9 @@ def sir_model(y, x, beta, gamma):
     return S, I, R
 
 def fit_odeint(x, beta, gamma):
-    return N - integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,0] # fit on infections
+    return N - integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,0] # fit on nonsusceptible
 
-
-N = 500
+N = 500 # need to read this from param.csv!!!
 I0 = ydata[0] 
 S0 = N - I0
 R0 = 0.0
@@ -37,8 +37,8 @@ beta, gamma = popt
 R0 = beta / gamma 
 print("beta", beta, "gamma", gamma, "R0", R0)
 
-plt.plot(xdata, ydata, 'o', label="data")
-plt.plot(xdata, fitted, label="SIR model")
+plt.plot(xdata, ydata, 'o', label="data", col='b')
+plt.plot(xdata, fitted, label="SIR model", col='r')
 
 plt.legend()
 plt.show()
