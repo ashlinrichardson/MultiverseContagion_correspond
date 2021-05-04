@@ -41,7 +41,7 @@ except: N_infect = 5
 try: N_simulation = int(args[7])
 except: N_simulation = 128
 
-if n_infect > N:
+if N_infect > N:
     err("number of initial infections must not be greater than pop size")
 
 pfn = 'pop' + str(N) +'.csv'
