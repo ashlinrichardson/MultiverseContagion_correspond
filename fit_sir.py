@@ -93,3 +93,6 @@ f.close()
 print('+w sir.csv.pop_size')
 open('sir.csv.pop_size', 'wb').write(str(int(population)).encode())
 
+print('w sir.csv.infected')
+open('sir.csv.infected', 'wb').write(str(int(infected)).encode())
+
