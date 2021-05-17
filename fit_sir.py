@@ -84,3 +84,9 @@ plt.xlabel('step')
 plt.ylabel('number of non-susceptible')
 plt.legend()
 plt.show()
+
+print('+w sir.csv')
+f = open('sir.csv', 'wb')
+f.write(('\n'.join([str(x) for x in fitted.tolist()])).encode())
+f.close()
+
