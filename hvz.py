@@ -39,7 +39,7 @@ print("guess b=c1", c1)
 print("guess c=c2", c2)
 
 a =  -.1
-c1 =  1. 
+c1 =  1.
 c2 = -1
 
 y = fx(td, a, c1, c2)
@@ -69,4 +69,3 @@ y = fx(td, a, b, c)
 plt.plot(td,yd, color='b')
 plt.plot(td, y, color='r')
 plt.show()
-

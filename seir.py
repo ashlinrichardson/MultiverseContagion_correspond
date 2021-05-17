@@ -39,7 +39,7 @@ def fit_odeint(x, beta, sigma, gamma):
 
 N = 500
 E0 = ydata[0]
-I0 = 0 # I0 = ydata[0] 
+I0 = 0 # I0 = ydata[0]
 S0 = N - I0
 R0 = 1.
 
@@ -47,7 +47,7 @@ popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
 fitted = fit_odeint(xdata, *popt)
 
 beta, sigma, gamma = popt
-R0 = beta / gamma 
+R0 = beta / gamma
 print("beta", beta, "gamma", gamma, "sigma", sigma, "R0", R0)
 
 plt.plot(xdata, ydata, '+', label="data", color='b')

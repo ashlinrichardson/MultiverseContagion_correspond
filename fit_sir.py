@@ -74,7 +74,7 @@ popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
 fitted = fit_odeint(xdata, *popt)
 
 beta, gamma = popt
-R0 = beta / gamma 
+R0 = beta / gamma
 print("beta", beta, "gamma", gamma, "R0", R0)
 
 plt.plot(xdata, ydata, '+', label="data", color='b')
@@ -95,4 +95,3 @@ open('sir.csv.pop_size', 'wb').write(str(int(population)).encode())
 
 print('w sir.csv.infected')
 open('sir.csv.infected', 'wb').write(str(int(infected)).encode())
-

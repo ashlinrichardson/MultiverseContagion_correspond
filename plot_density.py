@@ -113,7 +113,7 @@ plt.imshow(count)
 X = np.array(range(max_N)) / x_skip
 plt.plot(X, mx/y_skip -          mean/y_skip, color='red', label='mean')
 plt.plot(X, mx/y_skip - (mean + stdv)/y_skip, color='green', label='mean + sigma')
-plt.plot(X, mx/y_skip - (mean - stdv)/y_skip, color='blue', label='mean - sigma') 
+plt.plot(X, mx/y_skip - (mean - stdv)/y_skip, color='blue', label='mean - sigma')
 plt.legend()
 plt.xlabel('generation (rescaled)')
 plt.ylabel('infected')

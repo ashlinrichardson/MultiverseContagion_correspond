@@ -86,7 +86,7 @@ def plots(X, fn):
         print("E", E)
         plt.plot(t, I, label='Infected')
         plt.plot(t, R, label='Recovered')
-    
+
     # dt = t[1] - t[0]
     plt.plot(t, S[0] - S, label='Infections') # this is what we will correlate with ABM for now..
     plt.plot(t, mean, label='ABM mean')
@@ -156,6 +156,5 @@ def init_abm(): # guess at initializing SEIR from Agent Based Model
 
     print(res.x)
     '''
-    
-init_abm()
 
+init_abm()
