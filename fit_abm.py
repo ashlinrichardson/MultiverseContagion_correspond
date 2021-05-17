@@ -26,6 +26,7 @@ plt.plot(xdata, ydata)
 plt.show()
 
 '''
+
 def sir_model(y, x, beta, gamma):
     S = -beta * y[0] * y[1] / N
     R = gamma * y[1]
@@ -34,7 +35,10 @@ def sir_model(y, x, beta, gamma):
 
 def fit_odeint(x, beta, gamma):
     return N - integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,0] # fit on nonsusceptible
+
 '''
+
+# Error: python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe
 
 def fit_agentbased():
     pass
