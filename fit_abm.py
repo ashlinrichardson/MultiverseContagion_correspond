@@ -1,4 +1,7 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
+
+N_SIM = 64 # number of simulations per point
+
 import os
 import sys
 import json
@@ -10,6 +13,7 @@ def err(m):
     print("Error: " + m); sys.exit(1)
 
 def run(c):
+    print('[' + c + ']')
     a = os.system(c)
 
 
@@ -24,13 +28,29 @@ ydata = [x.strip() for x in open("sir.csv").readlines()] # from plot_density.py
 xdata = [float(x) for x in range(len(ydata))]
 
 ydata = np.array(ydata, dtype=float)  # convert to np float array format
+ydata -= infected # subtract number of initial infections from non-susceptible to get infections per step
+
+abm_mean = None
+try:
+    abm_mean = [float(x) for x in read_lines('mean.csv')]
+    last = abm_mean[-1]
+    print(len(abm_mean), len(xdata))
+    while len(abm_mean) < len(xdata): # if the abm stops early, assume the non-susceptibles at this point are fixed
+        abm_mean.append(last)
+
+    if len(abm_mean) > len(xdata):
+        abm_mean = abm_mean[0: len(xdata)]
+    # only need to vis on same domain
+    # 
+    print(abm_mean)
+    abm_mean = np.array(abm_mean, dtype=float)
+except:
+    abm_mean = None
+
 xdata = np.array(xdata, dtype=float)
-
-ydata -= infected # add on the number of initial infections to get number of non-susceptible
-
-abm_mean = np.array([float(x) for x in read_lines('mean.csv')])
-plt.plot(xdata, ydata, label='sir model')
-plt.plot(xdata, abm_mean, label='abm model')
+if abm_mean is not None:
+    plt.plot(abm_mean, label='abm mean')
+plt.plot(ydata, label='sir model')
 plt.legend()
 plt.show()
 
@@ -50,11 +70,13 @@ def fit_odeint(x, beta, gamma):
 # Error: python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe
 
 def fit_agentbased(x, HzR, sizeF, mF):
-    run('rm mean.csv') # for sanity..
-    run(' '.join(['python3', 'write_csv_run.py', str(population), str(HzR), str(sizeF), str(mF)]))
+    run('rm mean.csv *.txt *.grep') # for sanity..
+    run(' '.join(['python3', 'write_csv_run.py', str(int(population)), str(HzR), str(sizeF), str(mF), 'None', str(int(infected)), str(N_SIM)]))
     run('python3 plot_density.py')
     mean = np.array([float(x) for x in read_lines('mean.csv')])
-    mean += infected
+    print("mean", mean)
+    # mean -= infected
+    print("mean_cor", mean)
     return mean
 
 fit_agentbased(xdata, 1, 1, 1)
