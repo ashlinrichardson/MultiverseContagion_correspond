@@ -90,3 +90,6 @@ f = open('sir.csv', 'wb')
 f.write(('\n'.join([str(x) for x in fitted.tolist()])).encode())
 f.close()
 
+print('+w sir.csv.pop_size')
+open('sir.csv.pop_size').write(str(int(population)).encode())
+
