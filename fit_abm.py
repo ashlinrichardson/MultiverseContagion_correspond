@@ -76,34 +76,32 @@ def fit_agentbased(x, HzR, sizeF, mF):
     mean = np.array([float(x) for x in read_lines('mean.csv')])
     print("mean", mean)
     # mean -= infected
-    print("mean_cor", mean)
     return mean
 
-fit_agentbased(xdata, 1, 1, 1)
+# fit_agentbased(xdata, 1, 1, 1)
+# print("ydata", ydata)
+# sys.exit(1)
+# N = population # 500 # need to read this from param.csv!!!
+# I0 = ydata[0] # initial infections: take this to be the first observation. Natural assumption!
+# S0 = N - I0 # subtract the non-susceptible from the population size to get susceptible. Rocket science!
+# R0 = 0.0 # lower bound? this should grow from there..
 
-
-sys.exit(1)
-
-N = population # 500 # need to read this from param.csv!!!
-I0 = ydata[0] # initial infections: take this to be the first observation. Natural assumption!
-S0 = N - I0 # subtract the non-susceptible from the population size to get susceptible. Rocket science!
-R0 = 0.0 # lower bound? this should grow from there..
-
-popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata)
+popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata, p0 = [1., 1., 1.])
 fitted = fit_odeint(xdata, *popt)
+print(*popt)
 
-beta, gamma = popt
-R0 = beta / gamma 
-print("beta", beta, "gamma", gamma, "R0", R0)
+HzR, sizeF, mF = popt
+print('HzR', HzR, 'sizeF', sizeF, 'mF', mF)
 
-plt.plot(xdata, ydata, '+', label="data", color='b')
-plt.plot(xdata, fitted, label="SIR model", color='r')
-plt.title("SIR model fit to CovidSIM console.log")
+plt.plot(xdata, ydata, '+', label="input data", color='b')
+plt.plot(xdata, fitted, label="CovidSIM mean", color='r')
+plt.title("CovidSIM mean fitted to input data")
 plt.xlabel('step')
 plt.ylabel('number of non-susceptible')
 plt.legend()
 plt.show()
 
+'''
 print('+w sir.csv')
 f = open('sir.csv', 'wb')
 f.write(('\n'.join([str(x) for x in fitted.tolist()])).encode())
@@ -111,4 +109,4 @@ f.close()
 
 print('+w sir.csv.pop_size')
 open('sir.csv.pop_size', 'wb').write(str(int(population)).encode())
-
+'''
