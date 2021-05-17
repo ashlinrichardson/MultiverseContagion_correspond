@@ -30,9 +30,22 @@ xdata = [float(x) for x in range(len(ydata))]
 ydata = np.array(ydata, dtype=float)  # convert to np float array format
 ydata -= infected # subtract number of initial infections from non-susceptible to get infections per step
 
+def fix_array(my_data):
+    print("fix data of len: " + str(len(my_data)) + " to len: " + str(len(xdata)))
+    global xdata
+    last = my_data[-1]
+    print(len(my_data), len(xdata))
+    while len(my_data) < len(xdata): # if the abm stops early, assume the non-susceptibles at this point are fixed
+        my_data.append(last)
+
+    if len(my_data) > len(xdata):
+        my_data = my_data[0: len(xdata)]
+    return my_data
+
 abm_mean = None
 try:
     abm_mean = [float(x) for x in read_lines('mean.csv')]
+    '''
     last = abm_mean[-1]
     print(len(abm_mean), len(xdata))
     while len(abm_mean) < len(xdata): # if the abm stops early, assume the non-susceptibles at this point are fixed
@@ -41,7 +54,9 @@ try:
     if len(abm_mean) > len(xdata):
         abm_mean = abm_mean[0: len(xdata)]
     # only need to vis on same domain
-    # 
+    #
+    '''
+    abm_mean = fix_array(abm_mean)
     print(abm_mean)
     abm_mean = np.array(abm_mean, dtype=float)
 except:
