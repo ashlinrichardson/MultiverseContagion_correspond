@@ -1,5 +1,6 @@
 # need to read params from param.csv!!!!!
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate, optimize
@@ -30,6 +31,17 @@ if w[0] != 'case file':
 case_file = w[1]
 print("case_file", case_file)
 
+c = {} # pragmatic programming: find unique pID for initial cases
+lines = json.loads(open(case_file).read())['x']
+for line in lines:
+    w = line.strip().split(',')
+    try:
+        x = int(w[0])
+        if x not in c: c[x] = 0
+        c[x] += 1
+    except:
+        pass
+n_cases = len(c.keys())
 
 
 '''
