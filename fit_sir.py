@@ -22,7 +22,13 @@ w = lines[7].strip(',').split(',')
 if w[0] != 'pop file':
     err('expected: pop file')
 pop_file = w[1]
-print(pop_file)
+print("pop_file", pop_file)
+
+w = lines[8].strip(',').split(',')
+if w[0] != 'case file':
+    err('expected: case file')
+case_file = w[1]
+print("case_file", case_file)
 
 
 
