@@ -1,6 +1,7 @@
 # write csv, convert to JSON, then run simulation
 import os
 import sys
+import multiprocessing
 args = sys.argv
 
 def err(m):
@@ -94,4 +95,4 @@ for i in range(N_simulation):
     f.write(('Rscript run.R > run' + str(i) + '.txt\n').encode())
 f.close()
 
-a = os.system('python3 multicore.py simulation_jobs.txt')
+a = os.system('python3 multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count() + 1)) # let's just add one!

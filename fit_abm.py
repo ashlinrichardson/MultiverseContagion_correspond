@@ -1,6 +1,6 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
 
-N_SIM = 64 # number of simulations per point
+N_SIM = 256 # number of simulations per point
 
 import os
 import sys
@@ -19,7 +19,11 @@ def run(c):
 
 def read_lines(f):
     lines = [x.strip() for x in open(f).read().strip().split('\n')]
-    return lines
+    ret = []
+    for line in lines:
+        if line != '':
+            ret.append(line)
+    return ret
 
 population = float(int(open('sir.csv.pop_size').read())) # read population size
 infected = float(int(open('sir.csv.infected').read())) # read number of initial infections
@@ -51,11 +55,14 @@ except:
     abm_mean = None
 
 xdata = np.array(xdata, dtype=float)
-if abm_mean is not None:
-    plt.plot(abm_mean, label='abm mean')
-plt.plot(ydata, label='sir model')
-plt.legend()
-plt.show()
+
+pre_plot = False
+if pre_plot:
+    if abm_mean is not None:
+        plt.plot(abm_mean, label='abm mean')
+    plt.plot(ydata, label='sir model')
+    plt.legend()
+    plt.show()
 
 '''
 
@@ -69,7 +76,6 @@ def fit_odeint(x, beta, gamma):
     return N - integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,0] # fit on nonsusceptible
 
 '''
-
 
 # Error: python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe
 
