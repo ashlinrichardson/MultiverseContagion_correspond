@@ -22,7 +22,11 @@ ydata = np.array(ydata, dtype=float)  # convert to np float array format
 xdata = np.array(xdata, dtype=float)
 
 ydata -= infected # add on the number of initial infections to get number of non-susceptible
-plt.plot(xdata, ydata)
+
+abm_mean = np.array([float(x) for x in read_lines('mean.csv')])
+plt.plot(xdata, ydata, label='sir model')
+plt.plot(xdata, abm_mean, label='abm model')
+plt.legend()
 plt.show()
 
 '''
@@ -46,6 +50,9 @@ def fit_agentbased(x, HzR, sizeF, mF):
     mean = np.array([float(x) for x in read_lines('mean.csv')])
     mean += infected
     return mean
+
+fit_agentbased(xdata, 1, 1, 1)
+
 
 sys.exit(1)
 
