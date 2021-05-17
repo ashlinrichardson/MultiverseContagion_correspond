@@ -89,7 +89,9 @@ def fit_agent(x, HzR, sizeF, mF):
     run('rm mean.csv *.txt *.grep') # for sanity..
     run(' '.join(['python3', 'write_csv_run.py', str(int(population)), str(HzR), str(sizeF), str(mF), 'None', str(int(infected)), str(N_SIM)]))
     run('python3 plot_density.py')
-    mean = np.array([float(x) for x in read_lines('mean.csv')])
+    mean = [float(x) for x in read_lines('mean.csv')]
+    mean = fix_array(mean)
+    mean = np.array(mean)
     print("mean", mean)
     # mean -= infected
     return mean
