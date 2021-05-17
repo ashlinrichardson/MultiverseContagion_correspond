@@ -1,5 +1,5 @@
-# need to read params from param.csv!!!!!
-# https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares
+# https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
+# are we reading enough params from param.csv?
 import json
 import numpy as np
 import matplotlib.pyplot as plt
