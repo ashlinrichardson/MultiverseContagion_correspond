@@ -14,7 +14,7 @@ def err(m):
 
 def run(c):
     print('[' + c + ']')
-    a = os.system(c)
+    a = os.system(c + ' >>log.dat 2>&1')
 
 
 def read_lines(f):
@@ -80,7 +80,7 @@ def fit_agent(x, HzR, sizeF, mF):
     mean = [float(x) for x in read_lines('mean.csv')]
     mean = fix_array(mean)
     mean = np.array(mean)
-    print("mean", mean)
+    # print("mean", mean)
     # mean -= infected
     return mean
 
