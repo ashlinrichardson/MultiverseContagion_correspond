@@ -1,6 +1,6 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
 
-N_SIM = 256 # number of simulations per point
+N_SIM = 1024 # number of simulations per point
 
 import os
 import sys
