@@ -44,17 +44,6 @@ def fix_array(my_data):
 abm_mean = None
 try:
     abm_mean = [float(x) for x in read_lines('mean.csv')]
-    '''
-    last = abm_mean[-1]
-    print(len(abm_mean), len(xdata))
-    while len(abm_mean) < len(xdata): # if the abm stops early, assume the non-susceptibles at this point are fixed
-        abm_mean.append(last)
-
-    if len(abm_mean) > len(xdata):
-        abm_mean = abm_mean[0: len(xdata)]
-    # only need to vis on same domain
-    #
-    '''
     abm_mean = fix_array(abm_mean)
     print(abm_mean)
     abm_mean = np.array(abm_mean, dtype=float)
@@ -95,16 +84,8 @@ def fit_agent(x, HzR, sizeF, mF):
     # mean -= infected
     return mean
 
-# fit_agentbased(xdata, 1, 1, 1)
-# print("ydata", ydata)
-# sys.exit(1)
-# N = population # 500 # need to read this from param.csv!!!
-# I0 = ydata[0] # initial infections: take this to be the first observation. Natural assumption!
-# S0 = N - I0 # subtract the non-susceptible from the population size to get susceptible. Rocket science!
-# R0 = 0.0 # lower bound? this should grow from there..
-
 popt, pcov = optimize.curve_fit(fit_agent, xdata, ydata, p0 = [1., 1., 1.])
-fitted = fit_odeint(xdata, *popt)
+fitted = fit_agent(xdata, *popt)
 print(*popt)
 
 HzR, sizeF, mF = popt
@@ -117,13 +98,3 @@ plt.xlabel('step')
 plt.ylabel('number of non-susceptible')
 plt.legend()
 plt.show()
-
-'''
-print('+w sir.csv')
-f = open('sir.csv', 'wb')
-f.write(('\n'.join([str(x) for x in fitted.tolist()])).encode())
-f.close()
-
-print('+w sir.csv.pop_size')
-open('sir.csv.pop_size', 'wb').write(str(int(population)).encode())
-'''
