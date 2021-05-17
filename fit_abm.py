@@ -32,7 +32,6 @@ ydata -= infected # subtract number of initial infections from non-susceptible t
 
 def fix_array(my_data):
     print("fix data of len: " + str(len(my_data)) + " to len: " + str(len(xdata)))
-    global xdata
     last = my_data[-1]
     print(len(my_data), len(xdata))
     while len(my_data) < len(xdata): # if the abm stops early, assume the non-susceptibles at this point are fixed
