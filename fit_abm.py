@@ -67,9 +67,10 @@ def fit_odeint(x, beta, gamma):
 
 '''
 
+
 # Error: python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe
 
-def fit_agentbased(x, HzR, sizeF, mF):
+def fit_agent(x, HzR, sizeF, mF):
     run('rm mean.csv *.txt *.grep') # for sanity..
     run(' '.join(['python3', 'write_csv_run.py', str(int(population)), str(HzR), str(sizeF), str(mF), 'None', str(int(infected)), str(N_SIM)]))
     run('python3 plot_density.py')
@@ -86,7 +87,7 @@ def fit_agentbased(x, HzR, sizeF, mF):
 # S0 = N - I0 # subtract the non-susceptible from the population size to get susceptible. Rocket science!
 # R0 = 0.0 # lower bound? this should grow from there..
 
-popt, pcov = optimize.curve_fit(fit_odeint, xdata, ydata, p0 = [1., 1., 1.])
+popt, pcov = optimize.curve_fit(fit_agent, xdata, ydata, p0 = [1., 1., 1.])
 fitted = fit_odeint(xdata, *popt)
 print(*popt)
 
