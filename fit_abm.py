@@ -1,5 +1,5 @@
-# need to read params from param.csv!!!!!
-# https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares
+# https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
+import sys
 import json
 import numpy as np
 import matplotlib.pyplot as plt
@@ -21,14 +21,11 @@ xdata = [float(x) for x in range(len(ydata))]
 ydata = np.array(ydata, dtype=float)  # convert to np float array format
 xdata = np.array(xdata, dtype=float)
 
-ydata += infected # add on the number of initial infections to get I curve..
-
+ydata += infected # add on the number of initial infections to get number of non-susceptible
 plt.plot(xdata, ydata)
 plt.show()
-sys.exit(1)
 
-# ydata += infected # ydata will refer to the number of nonsusceptible.. after adding on the initial infections
-
+'''
 def sir_model(y, x, beta, gamma):
     S = -beta * y[0] * y[1] / N
     R = gamma * y[1]
@@ -37,6 +34,12 @@ def sir_model(y, x, beta, gamma):
 
 def fit_odeint(x, beta, gamma):
     return N - integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:,0] # fit on nonsusceptible
+'''
+
+def fit_agentbased():
+    pass
+
+sys.exit(1)
 
 N = population # 500 # need to read this from param.csv!!!
 I0 = ydata[0] # initial infections: take this to be the first observation. Natural assumption!
