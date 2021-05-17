@@ -31,9 +31,9 @@ ydata = np.array(ydata, dtype=float)  # convert to np float array format
 ydata -= infected # subtract number of initial infections from non-susceptible to get infections per step
 
 def fix_array(my_data):
-    print("fix data of len: " + str(len(my_data)) + " to len: " + str(len(xdata)))
+    print("\tfix data of len: " + str(len(my_data)) + " to len: " + str(len(xdata)))
     last = my_data[-1]
-    print(len(my_data), len(xdata))
+    # print(len(my_data), len(xdata))
     while len(my_data) < len(xdata): # if the abm stops early, assume the non-susceptibles at this point are fixed
         my_data.append(last)
 
@@ -84,7 +84,7 @@ def fit_agent(x, HzR, sizeF, mF):
     # mean -= infected
     return mean
 
-popt, pcov = optimize.curve_fit(fit_agent, xdata, ydata, p0 = [1., 1., 1.])
+popt, pcov = optimize.curve_fit(fit_agent, xdata, ydata, p0 = [.85, 1.5, .75])
 fitted = fit_agent(xdata, *popt)
 print(*popt)
 
