@@ -15,13 +15,13 @@ def read_lines(f):
 population = float(int(open('sir.csv.pop_size').read())) # read population size
 infected = float(int(open('sir.csv.infected').read())) # read number of initial infections
 
-ydata = [x.strip() for x in open("mean.csv").readlines()] # from plot_density.py
+ydata = [x.strip() for x in open("sir.csv").readlines()] # from plot_density.py
 xdata = [float(x) for x in range(len(ydata))]
 
 ydata = np.array(ydata, dtype=float)  # convert to np float array format
 xdata = np.array(xdata, dtype=float)
 
-ydata += infected # add on the number of initial infections to get number of non-susceptible
+ydata -= infected # add on the number of initial infections to get number of non-susceptible
 plt.plot(xdata, ydata)
 plt.show()
 
