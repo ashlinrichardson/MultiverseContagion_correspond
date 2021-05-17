@@ -13,10 +13,11 @@ python3 fit_sir.py # fit SIR model to mean trajectory
 ```
 
 ## Todo:
-* fit_sir.py read params from param.csv
+
 * fit CovidSIM to SIR
 * derive mapping from coefficient sets (both directions)
 
 
 ## Done
 * fit SIR to CovidSIM
+* fit_sir.py read params from param.csv (sortof, we read the pop size and the initial number of infected)
