@@ -1,4 +1,5 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
+import os
 import sys
 import json
 import numpy as np
@@ -7,6 +8,10 @@ from scipy import integrate, optimize
 
 def err(m):
     print("Error: " + m); sys.exit(1)
+
+def run(c):
+    a = os.system(c)
+
 
 def read_lines(f):
     lines = [x.strip() for x in open(f).read().strip().split('\n')]
@@ -45,8 +50,9 @@ def fit_odeint(x, beta, gamma):
 # Error: python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe
 
 def fit_agentbased(x, HzR, sizeF, mF):
-    a = os.system('rm mean.csv') # for sanity..
-    a = os.system(' '.join(['python3', 'write_csv_run.py', str(population), str(HzR), str(sizeF), str(mF)]))
+    run('rm mean.csv') # for sanity..
+    run(' '.join(['python3', 'write_csv_run.py', str(population), str(HzR), str(sizeF), str(mF)]))
+    run('python3 plot_density.py')
     mean = np.array([float(x) for x in read_lines('mean.csv')])
     mean += infected
     return mean
