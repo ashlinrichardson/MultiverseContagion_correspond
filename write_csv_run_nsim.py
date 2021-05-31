@@ -5,7 +5,7 @@ def run(c):
 
 run("mkdir -p n_sim")
 
-for n_sim in [8, 16, 32, 64, 128, 256, 512, 1024]:
+for n_sim in [8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]:
     run("rm *.txt")
     run("rm *.grep")
     run("rm *.png")
