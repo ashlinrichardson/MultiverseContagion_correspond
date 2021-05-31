@@ -10,9 +10,6 @@ def err(m):
 
 arguments = args[1:] # for this script the arguments are only used to create the filename
 
-def err(m):
-    print("Error:", m); sys.exit(1)
-
 d = {}
 max_N = 0
 files = [x.strip() for x in os.popen("ls -1 run*.txt").readlines()]
@@ -125,3 +122,12 @@ plt.ylabel('infected')
 plt.title(lab + " (N=" + str(len(files)) + " runs)") # still need to adjust scales..
 plt.tight_layout()
 plt.savefig('_'.join(["density"] + arguments + [lab]).replace(" ", "_") + ".png")
+plt.close()
+
+plt.figure()
+plt.plot(mean, label='mean')
+plt.plot(mean + stdv, label='mean +sigma')
+plt.plot(mean - stdv, label='mean -sigma')
+plt.tight_layout()
+plt.savefig('mean_sigma.png')
+plt.close()
