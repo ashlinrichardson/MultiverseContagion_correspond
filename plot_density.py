@@ -83,6 +83,11 @@ for i in range(1, max_N):
 f.close()
 
 stdv = [np.std([value[f][i] for f in files]) for i in range(max_N)]
+f = open('stdv.csv', 'wb')
+f.write((str(stdv[0])).encode())
+for i in range(1, max_N):
+    f.write(('\n' + str(stdv[i])).encode())
+f.close()
 
 print("accumulate.........")
 y_skip = 2. # 2 # 5.
