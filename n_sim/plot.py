@@ -82,7 +82,7 @@ for k in range(1, len(m_f)):
             m0 += [X]
 
         print("i+1", i+1, "i", i)
-        plt.plot(np.abs(np.array(m) - np.array(m0)), label='n_sims=' + str(j[i+1]) + ' vs ' + str(j[i]))
+        plt.plot((np.abs(np.array(m) - np.array(m0))), label='n_sims=' + str(j[i+1]) + ' vs ' + str(j[i]))
         plt.ylim([0, 7])
         plt.legend(loc="upper left")
 
