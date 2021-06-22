@@ -4,8 +4,12 @@ import sys
 import matplotlib.pyplot as plt
 args = sys.argv
 
+f = args[1]
+g = f[:-4] + '.grep'
+a = os.system('grep "prob=" ' + f + ' > ' + g)
+
 x, y = [], []
-lines = open(args[1]).readlines()
+lines = open(g).readlines()
 lines = [x.strip() for x in lines]
 
 for line in lines:
