@@ -15,7 +15,8 @@ for ix in range(len(means)):
     m = means[ix]
     d = dirs[ix]
     print(ix, d)
-    a = os.system("python3 fit_sir.py " + d)
+    if not os.path.exists(bgr[ix]):
+        a = os.system("python3 fit_sir.py " + d)
 
     x = [i.strip() for i in open(m).readlines()]
     x = [float(i) for i in x]
