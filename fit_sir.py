@@ -1,5 +1,7 @@
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
 # are we reading enough params from param.csv?
+import os
+import sys
 import json
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,7 +14,16 @@ def read_lines(f):
     lines = [x.strip() for x in open(f).read().strip().split('\n')]
     return lines
 
-lines = read_lines('param.csv')  # read the parameter file to get the population size!
+sep = os.path.sep
+d  = './'
+args = sys.argv
+if len(args) > 1:
+    d = args[1]
+if d[-1] != sep:
+    d += sep
+print(d)
+
+lines = read_lines(d + 'param.csv')  # read the parameter file to get the population size!
 w = lines[1].strip(',').split(',')
 if w[0] != 'population':
     err('expected: population: found: ' + w[0])
@@ -22,13 +33,13 @@ print("population", population)
 w = lines[7].strip(',').split(',')  # read the pop file name from param.csv
 if w[0] != 'pop file':
     err('expected: pop file')
-pop_file = w[1]
+pop_file = d + w[1]
 print("pop_file", pop_file)
 
 w = lines[8].strip(',').split(',') # read the case file name from param.csv
 if w[0] != 'case file':
     err('expected: case file')
-case_file = w[1]
+case_file = d + w[1]
 print("case_file", case_file)
 
 c = {} # pragmatic programming: find unique pID for initial cases
@@ -48,7 +59,7 @@ ydata = ['1e-06', '1.49920166169172e-06', '2.24595472686361e-06', '3.36377954575
 xdata = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99', '100', '101']
 '''
 
-ydata = [x.strip() for x in open("mean.csv").readlines()] # from plot_density.py
+ydata = [x.strip() for x in open(d + "mean.csv").readlines()] # from plot_density.py
 xdata = [float(x) for x in range(len(ydata))]
 
 ydata = np.array(ydata, dtype=float)  # convert to np float array format
@@ -76,6 +87,9 @@ fitted = fit_odeint(xdata, *popt)
 beta, gamma = popt
 R0 = beta / gamma
 print("beta", beta, "gamma", gamma, "R0", R0)
+bgm = d + "beta_gamma_R0.csv"
+print("+w " + bgm)
+open(bgm, "wb").write((','.join([str(x) for x in [beta, gamma, R0]])).encode())
 
 plt.plot(xdata, ydata, '+', label="data", color='b')
 plt.plot(xdata, fitted, label="SIR model", color='r')
@@ -85,13 +99,13 @@ plt.ylabel('number of non-susceptible')
 plt.legend()
 plt.savefig("fit_sir.png")
 
-print('+w sir.csv')
-f = open('sir.csv', 'wb')
+print('+w ' + d + 'sir.csv')
+f = open(d + 'sir.csv', 'wb')
 f.write(('\n'.join([str(x) for x in fitted.tolist()])).encode())
 f.close()
 
-print('+w sir.csv.pop_size')
-open('sir.csv.pop_size', 'wb').write(str(int(population)).encode())
+print('+w ' + d + 'sir.csv.pop_size')
+open(d + 'sir.csv.pop_size', 'wb').write(str(int(population)).encode())
 
-print('w sir.csv.infected')
-open('sir.csv.infected', 'wb').write(str(int(infected)).encode())
+print('w ' + d + 'sir.csv.infected')
+open(d + 'sir.csv.infected', 'wb').write(str(int(infected)).encode())
