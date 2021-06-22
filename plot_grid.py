@@ -25,7 +25,7 @@ for ix in range(len(means)):
     last = x[-1]
     while len(x) < T:
         x += [last]
-    print(len(x), x)
+    # print(len(x), x)
 
     plt.plot(x)
 plt.tight_layout()
