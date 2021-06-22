@@ -2,16 +2,35 @@
 import os
 import sys
 import multiprocessing
+import uuid # uuid.uuid4()
 args = sys.argv
+sep = os.path.sep
 
 def err(m):
     print("Error: " + m); sys.exit(1)
+
+def run(c):
+    print(c)
+    a = os.system(c)
+    if a != 0: err("command failed: " + str(c))
 
 if len(args) < 2:
     print("python3 write_csv_run.py 500 None None None None 5 256 # example")
     err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe")
 
 a = os.system("Rscript run.R") # make sure C program is compiled!
+
+run("mkdir -p bak")
+if len(os.popen("ls -1 *.csv").readlines()) > 1:
+    run("mv *.csv bak")
+if len(os.popen("ls -1 *.json").readlines()) > 1:
+    run("mv *.json bak")
+if len(os.popen("ls -1 *.txt").readlines()) > 1:
+    run("mv *.txt bak")
+if len(os.popen("ls -1 *.grep").readlines()) > 1:
+    run("mv *.grep bak")
+if len(os.popen("ls -1 *.png").readlines()) > 1:
+    run("mv *.png bak")
 
 N = None
 HzR = None
@@ -44,6 +63,10 @@ except: N_simulation = 128
 
 if N_infect > N:
     err("number of initial infections must not be greater than pop size")
+
+dn = "_".join([str(x) for x in [N, HzR, sizeF, mF, RedDays, N_infect, N_simulation]]) + sep
+print(dn)
+run("mkdir -p " + dn)
 
 pfn = 'pop' + str(N) +'.csv'
 f = open(pfn, 'wb')
@@ -92,7 +115,9 @@ for fn in [pfn, par_fn, cfn]:
 
 f = open('simulation_jobs.txt', 'wb')
 for i in range(N_simulation):
-    f.write(('Rscript run.R > run' + str(i) + '.txt\n').encode())
+    f.write(('Rscript run.R > run_' + str(uuid.uuid4()) + '.txt\n').encode())
 f.close()
 
-a = os.system('python3 multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count() + 2)) # let's just add one!
+a = os.system('python3 multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count())) # let's just add one!
+
+run("mv *.csv *.json *.txt *.png " + dn)
