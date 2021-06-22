@@ -120,4 +120,6 @@ f.close()
 
 a = os.system('python3 multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count())) # let's just add one!
 
+run("python3 plot_density.py") # generate mean curve..
+
 run("mv *.csv *.json *.txt *.png " + dn)
