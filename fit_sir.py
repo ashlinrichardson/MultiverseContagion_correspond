@@ -1,3 +1,6 @@
+'''
+python3 fit_sir.py [files directory]
+'''
 # https://stackoverflow.com/questions/34422410/fitting-sir-model-based-on-least-squares # based on
 # are we reading enough params from param.csv?
 import os
