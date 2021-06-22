@@ -1,3 +1,6 @@
+'''
+this one should be run after write_csv_run_grid.py
+'''
 import os
 import sys
 import numpy as np
