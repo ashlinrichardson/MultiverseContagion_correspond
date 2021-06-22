@@ -83,7 +83,7 @@ plt.title("SIR model fit to CovidSIM console.log")
 plt.xlabel('step')
 plt.ylabel('number of non-susceptible')
 plt.legend()
-plt.show()
+plt.savefig("fit_sir.png")
 
 print('+w sir.csv')
 f = open('sir.csv', 'wb')
