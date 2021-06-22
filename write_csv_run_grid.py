@@ -1,3 +1,4 @@
+# run plot_grid.py after this..
 import os
 def run(c):
     a = os.system(c)
