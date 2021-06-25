@@ -79,6 +79,7 @@ if True:
         ax[0] = fig.add_subplot(1, 2, 1, projection='3d')
         ax[1] = fig.add_subplot(1, 2, 2)
 
+
         #fig, ax = plt.subplots(1, 2) # horizontal plots
     if ANIMATION_MODE:
         plt.rcParams['axes.facecolor'] = 'black'
@@ -96,6 +97,7 @@ if True:
             dta = [str(round(q,4)) for q in (covid[x] + sirps[x])]
             ax[1].plot(curve[x], label=' '.join([var[q] + '=' + dta[q] for q in range(len(var))])) #     + ', '.join())
         ax[1].legend()
+        ax[1].set_ylim([0, 500])
         plt.draw()
 
 
