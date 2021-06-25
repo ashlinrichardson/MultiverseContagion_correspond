@@ -1,4 +1,5 @@
 # from https://matplotlib.org/stable/gallery/event_handling/pick_event_demo.html
+# use this to adapt plot_data.py to plot_data_interact.py 
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
