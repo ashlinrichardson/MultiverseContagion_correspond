@@ -23,8 +23,8 @@ mp.rcParams['axes.labelcolor'] = COLOR
 mp.rcParams['xtick.color'] = COLOR
 mp.rcParams['ytick.color'] = COLOR
 
-# lines = [x.strip() for x in open("data.dat").readlines()]
-lines = [x.strip() for x in os.popen("head -50 data.dat").readlines()]
+lines = [x.strip() for x in open("data.dat").readlines()]
+# lines = [x.strip() for x in os.popen("head -50 data.dat").readlines()]  # low data volume for testing
 curve, covid, sirps = [], [], []
 fig, ax = None, None
 ci = 0
