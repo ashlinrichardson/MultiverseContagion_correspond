@@ -17,7 +17,7 @@ font = {'family' : 'serif',
         'weight' : 'normal',
         'size'   : 7}
 mp.rc('font', **font)
-COLOR = 'white'
+COLOR = 'white' if ANIMATION_MODE else 'black'
 mp.rcParams['text.color'] = COLOR
 mp.rcParams['axes.labelcolor'] = COLOR
 mp.rcParams['xtick.color'] = COLOR
@@ -89,7 +89,7 @@ if True:
         print("pick:", i)
         for x in i:
             print("covid", covid[x], "sirps", sirps[x]) # print("\t", curve[x])
-            ax[1].plot(curve[x], label='HzR, sizeF, mF, beta, gamma, R0=')
+            ax[1].plot(curve[x], label='HzR, sizF, mF, bta, gama, R0=' + ', '.join([str(round(q,4)) for q in (covid[x] + sirps[x])]))
         ax[1].legend()
         plt.draw()
 
