@@ -83,6 +83,9 @@ if True:
     if ANIMATION_MODE:
         plt.rcParams['axes.facecolor'] = 'black'
 
+    '''object picking..
+    https://matplotlib.org/stable/users/event_handling.html#object-picking
+    https://matplotlib.org/stable/gallery/event_handling/pick_event_demo.html '''
     def on_pick(event):
         ax[1].clear()
         i = event.ind
@@ -136,24 +139,4 @@ if True:
         # plt.savefig("tnse_2d_params.png")
 
 
-'''
-def pick_scatter_plot():
-    # picking on a scatter plot (matplotlib.collections.RegularPolyCollection)
 
-    x, y, c, s = rand(4, 100)
-
-    def onpick3(event):
-        ind = event.ind
-        print('onpick3 scatter:', ind, x[ind], y[ind])
-
-    fig, ax = plt.subplots()
-    ax.scatter(x, y, 100*s, c, picker=True)
-    fig.canvas.mpl_connect('pick_event', onpick3)
-'''
-
-
-'''object picking..
-
-https://matplotlib.org/stable/users/event_handling.html#object-picking
-
-https://matplotlib.org/stable/gallery/event_handling/pick_event_demo.html '''
