@@ -14,8 +14,8 @@ from sklearn.manifold import TSNE
 from mpl_toolkits.mplot3d import Axes3D
 
 font = {'family' : 'serif',
-        'weight' : 'bold',
-        'size'   : 9}
+        'weight' : 'normal',
+        'size'   : 7}
 mp.rc('font', **font)
 COLOR = 'white'
 mp.rcParams['text.color'] = COLOR
@@ -23,8 +23,10 @@ mp.rcParams['axes.labelcolor'] = COLOR
 mp.rcParams['xtick.color'] = COLOR
 mp.rcParams['ytick.color'] = COLOR
 
-lines = [x.strip() for x in open("data.dat").readlines()]
+# lines = [x.strip() for x in open("data.dat").readlines()]
+lines = [x.strip() for x in os.popen("head -50 data.dat").readlines()]
 curve, covid, sirps = [], [], []
+fig, ax = None, None
 ci = 0
 for line in lines:
     ci += 1
@@ -53,8 +55,7 @@ if False:  # remember to revisit this again..embedding on the raw curves (would 
 if True:
     dx = [covid[i] + sirps[i] for i in range(len(covid))]
     X = np.array(dx)
-    X = TSNE(n_components=3).fit_transform(X)
-    print(X.shape)
+    X = TSNE(n_components=3).fit_transform(X) # print(X.shape)
     n = X.shape[0]
     N = range(n)
     rgb = [covid[i] for i in N]
@@ -68,15 +69,25 @@ if True:
             (rgb[i][1] - g_min) / (g_max - g_min), 
             (rgb[i][2] - b_min) / (b_max - b_min)] for i in N]
 
-    fig = plt.figure(figsize=(16, 9), tight_layout=True, dpi=300)
-    ax = None
-    plt.rcParams['axes.facecolor'] = 'black'
+    if ANIMATION_MODE:
+        fig = plt.figure(figsize=(16, 9), tight_layout=True, dpi=300)
+    else:
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+        ax =[None, None]
+        ax[0] = fig.add_subplot(1, 2, 1, projection='3d')
+        ax[1] = fig.add_subplot(1, 2, 2)
+
+        #fig, ax = plt.subplots(1, 2) # horizontal plots
+    if ANIMATION_MODE:
+        plt.rcParams['axes.facecolor'] = 'black'
 
     def init():
         global ax
-        ax = plt.axes(projection='3d')
-        ax.set_facecolor('black')
-        ax.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb) # cmap='Greens')
+        ax0 = ax if ANIMATION_MODE else ax[0]
+        if ANIMATION_MODE:
+            ax0 = plt.axes(projection='3d')
+            ax0.set_facecolor('black')
+        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb) # cmap='Greens')
         return fig,
     
     TF = 11  # time scaling factor
