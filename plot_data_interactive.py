@@ -72,6 +72,8 @@ if True:
     if ANIMATION_MODE:
         fig = plt.figure(figsize=(16, 9), tight_layout=True, dpi=300)
     else:
+        # https://matplotlib.org/stable/gallery/mplot3d/subplot3d.html
+        # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
         fig = plt.figure(figsize=plt.figaspect(0.5))
         ax =[None, None]
         ax[0] = fig.add_subplot(1, 2, 1, projection='3d')
@@ -88,7 +90,7 @@ if True:
             ax0 = plt.axes(projection='3d')
             ax0.set_facecolor('black')
         else:
-            ax[1].plot(curves[0])
+            ax[1].plot(curve[0])
         ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb) # cmap='Greens')
         return fig,
     
@@ -115,3 +117,10 @@ if True:
         plt.tight_layout()
         plt.show()
         # plt.savefig("tnse_2d_params.png")
+
+
+
+'''object picking..
+
+https://matplotlib.org/stable/users/event_handling.html#object-picking
+'''
