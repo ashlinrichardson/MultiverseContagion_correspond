@@ -91,7 +91,8 @@ if True:
             ax0.set_facecolor('black')
         else:
             ax[1].plot(curve[0])
-        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb) # cmap='Greens')
+        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb, picker=True) # cmap='Greens')
+
         return fig,
     
     TF = 11  # time scaling factor
@@ -118,6 +119,21 @@ if True:
         plt.show()
         # plt.savefig("tnse_2d_params.png")
 
+
+'''
+def pick_scatter_plot():
+    # picking on a scatter plot (matplotlib.collections.RegularPolyCollection)
+
+    x, y, c, s = rand(4, 100)
+
+    def onpick3(event):
+        ind = event.ind
+        print('onpick3 scatter:', ind, x[ind], y[ind])
+
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, 100*s, c, picker=True)
+    fig.canvas.mpl_connect('pick_event', onpick3)
+'''
 
 
 '''object picking..
