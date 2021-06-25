@@ -123,4 +123,5 @@ if True:
 '''object picking..
 
 https://matplotlib.org/stable/users/event_handling.html#object-picking
-'''
+
+https://matplotlib.org/stable/gallery/event_handling/pick_event_demo.html '''
