@@ -89,7 +89,9 @@ if True:
         print("pick:", i)
         for x in i:
             print("covid", covid[x], "sirps", sirps[x]) # print("\t", curve[x])
-            ax[1].plot(curve[x], label='HzR, sizF, mF, bta, gama, R0=' + ', '.join([str(round(q,4)) for q in (covid[x] + sirps[x])]))
+            var = ['HzR', 'sizF', 'mF', 'bta', 'gama', 'R0']
+            dta = [str(round(q,4)) for q in (covid[x] + sirps[x])]
+            ax[1].plot(curve[x], label=' '.join([var[q] + '=' + dta[q] for q in range(len(var))])) #     + ', '.join())
         ax[1].legend()
         plt.draw()
 
