@@ -55,7 +55,7 @@ if False:  # remember to revisit this again..embedding on the raw curves (would 
 if True:
     dx = [covid[i] + sirps[i] for i in range(len(covid))]
     X = np.array(dx)
-    X = TSNE(n_components=3).fit_transform(X) # print(X.shape)
+    X = TSNE(n_components=3, verbose=True).fit_transform(X) # print(X.shape)
     n = X.shape[0]
     N = range(n)
     rgb = [covid[i] for i in N]
