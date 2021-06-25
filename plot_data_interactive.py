@@ -83,6 +83,17 @@ if True:
     if ANIMATION_MODE:
         plt.rcParams['axes.facecolor'] = 'black'
 
+    def on_pick(event):
+        ax[1].clear()
+        i = event.ind
+        print("pick:", i)
+        for x in i:
+            print("covid", covid[x], "sirps", sirps[x]) # print("\t", curve[x])
+            ax[1].plot(curve[x], label='HzR, sizeF, mF, beta, gamma, R0=')
+        ax[1].legend()
+        plt.draw()
+
+
     def init():
         global ax
         ax0 = ax if ANIMATION_MODE else ax[0]
@@ -91,7 +102,10 @@ if True:
             ax0.set_facecolor('black')
         else:
             ax[1].plot(curve[0])
-        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb, picker=True) # cmap='Greens')
+        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb, picker=True if INTERACTIVE_MODE else False) # cmap='Greens')
+
+        if INTERACTIVE_MODE:
+            fig.canvas.mpl_connect('pick_event', on_pick)
 
         return fig,
     
