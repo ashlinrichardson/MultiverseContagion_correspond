@@ -87,6 +87,8 @@ if True:
         if ANIMATION_MODE:
             ax0 = plt.axes(projection='3d')
             ax0.set_facecolor('black')
+        else:
+            ax[1].plot(curves[0])
         ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb) # cmap='Greens')
         return fig,
     
