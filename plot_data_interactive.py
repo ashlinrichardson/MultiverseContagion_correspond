@@ -2,7 +2,7 @@
 .. should have a switch between video and interactive mode!'''
 
 INTERACTIVE_MODE = True
-ANIMATION_MODE = !INTERACTIVE_MODE # disable user input to plot a video!
+ANIMATION_MODE = not INTERACTIVE_MODE # disable user input to plot a video!
 
 import os
 import sys
@@ -98,6 +98,7 @@ if True:
         anim.save('tSNE_vid_' + str(TF) + '_.mp4', fps=60, extra_args=['-vcodec', 'libx264'])
     
     else:
+        init()
         plt.tight_layout()
         plt.show()
         # plt.savefig("tnse_2d_params.png")
