@@ -1,4 +1,9 @@
-'''this one should be run after write_csv_run_grid.py'''
+'''this one should be run after write_csv_run_grid.py
+
+NB this needs a switch (argparse) for coloring..
+
+SIR vs COVIDSIM parameters for rgb'''
+
 import os
 import sys
 import numpy as np
