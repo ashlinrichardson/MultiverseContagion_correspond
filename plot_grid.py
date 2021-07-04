@@ -3,7 +3,7 @@ import sys
 import matplotlib.pyplot as plt
 sep = os.path.sep
 
-T = 2000.
+T = 500.
 means = [x.strip() for x in os.popen('find ./ -name "mean.csv"')]
 
 dirs = [sep.join(x.split(sep)[:-1]) + sep for x in means]
