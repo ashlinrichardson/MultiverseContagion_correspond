@@ -14,9 +14,9 @@ run("mkdir -p n_sim")
 
 ci = 0
 n_sim = 1
-HzRs = [0.85 + i for i in range(0, 10)]
-sizeFs = [1. + (0.25 * i) for i in range(0, 5)]
-mFs = [0.75 + (0.25 * i) for i in range(0, 10)]
+HzRs = [0.5 + (i/10.) for i in range(0, 10)]
+sizeFs = [1. + (0.1 * i) for i in range(0, 5)]
+mFs = [0.5 + (0.1 * i) for i in range(0, 10)]
 total = len(HzRs) * len(sizeFs) * len(mFs)
 
 t0 = time.time()
