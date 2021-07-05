@@ -1,4 +1,8 @@
-# run plot_grid.py after this..
+'''run plot_grid.py after this..
+
+and then plot_data_interactive.py or plot_data_video.py
+'''
+
 import os
 import time
 def run(c):

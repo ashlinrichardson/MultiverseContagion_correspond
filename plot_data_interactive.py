@@ -95,6 +95,7 @@ if True:
             print("covid", covid[x], "sirps", sirps[x]) # print("\t", curve[x])
             var = ['HzR', 'sizF', 'mF', 'bta', 'gama', 'R0']
             dta = [str(round(q,4)) for q in (covid[x] + sirps[x])]
+            print("curve", curve[x])
             ax[1].plot(curve[x], label=' '.join([var[q] + '=' + dta[q] for q in range(len(var))])) #     + ', '.join())
         ax[1].legend()
         ax[1].set_ylim([0, 500])
