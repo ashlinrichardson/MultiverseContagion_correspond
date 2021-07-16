@@ -53,8 +53,7 @@ if N_infect > N:
 dn = "_".join([str(x) for x in [N, HzR, sizeF, mF, RedDays, N_infect, N_simulation]]) + sep
 print(dn)
 run("mkdir -p " + dn)
-
-a = os.system("cd " + dn + "; Rscript ../run.R") # make sure C program is compiled!
+a = os.system("cp -rv cpp tmp run.R *.py *.js " + dn)
 
 pfn = 'pop' + str(N) +'.csv'
 f = open(dn + sep + pfn, 'wb')
@@ -99,15 +98,15 @@ for i in range(N_infect):
 f.close()
 
 for fn in [pfn, par_fn, cfn]:
-    a = os.system('python3 csv2json.py ' + fn)
+    a = os.system('cd ' + dn + '; python3 csv2json.py ' + fn)
 
 f = open(dn + sep + 'simulation_jobs.txt', 'wb')
 for i in range(N_simulation):
-    f.write(('cd ' + dn + '; Rscript ../run.R > run_' + str(uuid.uuid4()) + '.txt\n').encode())
+    f.write(('Rscript run.R > run_' + str(uuid.uuid4()) + '.txt\n').encode())
 f.close()
 
-a = os.system('cd ' + dn + '; python3 ../multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count())) # let's just add one!
+a = os.system('cd ' + dn + '; python3 multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count())) # let's just add one!
 
-run("cd " + dn + "; python3 ../plot_density.py") # generate mean curve..
-run("cd " + dn + "; python3 ../fit_sir.py") # fit SIR model..
+run("cd " + dn + "; python3 plot_density.py") # generate mean curve..
+run("cd " + dn + "; python3 fit_sir.py") # fit SIR model..
 # run("mv *.csv *.json *.txt *.png " + dn) # already in the directory!!

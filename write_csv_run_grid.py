@@ -1,9 +1,13 @@
-'''run plot_grid.py after this..
+'''first filter for results that produced SIR fits???
 
-and then plot_data_interactive.py or plot_data_video.py'''
+run plot_grid.py after this..
+
+and then plot_data_interactive.py or plot_data_video.py?'''
 
 import os
 import time
+
+a = os.system("Rscript run.R") # make sure C code is compiled
 batch_f = open("run_grid.sh", "wb")
 batch_f_lines = []
 
@@ -37,9 +41,9 @@ for HzR in HzRs:
             secs_per_i = (t1 - t0) / ci
             eta = secs_per_i * (total - ci)
 
-            print("% complete: " + str(100. * ci / total) + " eta: " + str(eta) + " s")
+            # print("% complete: " + str(100. * ci / total) + " eta: " + str(eta) + " s")
 
 batch_f.write(("\n".join([x.strip() for x in batch_f_lines])).encode())
 batch_f.close()
 
-# a = os.system("multicore run_grid.sh 8")
+a = os.system("multicore run_grid.sh 8")
