@@ -18,20 +18,6 @@ if len(args) < 2:
     print("python3 write_csv_run.py 500 None None None None 5 256 # example")
     err("python3 write_csv [population size] [HzR] [sizeF] [mF] [RedDays] [N_infect] [N_simulation] # write tickets going no-where for single universe")
 
-a = os.system("Rscript run.R") # make sure C program is compiled!
-
-run("mkdir -p bak")
-if len(os.popen("ls -1 *.csv").readlines()) > 1:
-    run("mv *.csv bak")
-if len(os.popen("ls -1 *.json").readlines()) > 1:
-    run("mv *.json bak")
-if len(os.popen("ls -1 *.txt").readlines()) > 1:
-    run("mv *.txt bak")
-if len(os.popen("ls -1 *.grep").readlines()) > 1:
-    run("mv *.grep bak")
-if len(os.popen("ls -1 *.png").readlines()) > 1:
-    run("mv *.png bak")
-
 N = None
 HzR = None
 sizeF = None
@@ -68,8 +54,10 @@ dn = "_".join([str(x) for x in [N, HzR, sizeF, mF, RedDays, N_infect, N_simulati
 print(dn)
 run("mkdir -p " + dn)
 
+a = os.system("cd " + dn + "; Rscript ../run.R") # make sure C program is compiled!
+
 pfn = 'pop' + str(N) +'.csv'
-f = open(pfn, 'wb')
+f = open(dn + sep + pfn, 'wb')
 
 def w(f, s):
     f.write(s.encode())
@@ -89,7 +77,7 @@ for i in range(N):
 f.close()
 
 par_fn = 'param.csv'
-f = open(par_fn, 'wb')
+f = open(dn + sep + par_fn, 'wb')
 w(f, 'Parameters,,\n')
 w(f, 'population,' + str(N) + ',\n')
 w(f, 'UN,1,Universe\n')
@@ -103,7 +91,7 @@ w(f, 'STOP,2000,\n')
 f.close()
 
 cfn = 'case' + str(N_infect) + '.csv'
-f = open(cfn, 'wb')
+f = open(dn + sep + cfn, 'wb')
 w(f, '''Cases,,,,,,
 pID,age-Gp,comb-risk,VL,postInfD,role,minglx''')
 for i in range(N_infect):
@@ -113,13 +101,13 @@ f.close()
 for fn in [pfn, par_fn, cfn]:
     a = os.system('python3 csv2json.py ' + fn)
 
-f = open('simulation_jobs.txt', 'wb')
+f = open(dn + sep + 'simulation_jobs.txt', 'wb')
 for i in range(N_simulation):
-    f.write(('Rscript run.R > run_' + str(uuid.uuid4()) + '.txt\n').encode())
+    f.write(('cd ' + dn + '; Rscript ../run.R > run_' + str(uuid.uuid4()) + '.txt\n').encode())
 f.close()
 
-a = os.system('python3 multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count())) # let's just add one!
+a = os.system('cd ' + dn + '; python3 ../multicore.py simulation_jobs.txt ' + str(multiprocessing.cpu_count())) # let's just add one!
 
-run("python3 plot_density.py") # generate mean curve..
-run("python3 fit_sir.py") # fit SIR model..
-run("mv *.csv *.json *.txt *.png " + dn)
+run("cd " + dn + "; python3 ../plot_density.py") # generate mean curve..
+run("cd " + dn + "; python3 ../fit_sir.py") # fit SIR model..
+# run("mv *.csv *.json *.txt *.png " + dn) # already in the directory!!
