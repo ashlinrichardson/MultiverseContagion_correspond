@@ -1,22 +1,25 @@
 '''run plot_grid.py after this..
 
-and then plot_data_interactive.py or plot_data_video.py
-'''
+and then plot_data_interactive.py or plot_data_video.py'''
 
 import os
 import time
+batch_f = open("run_grid.sh", "wb")
+batch_f_lines = []
+
 def run(c):
-    a = os.system(c)
-    return a
+    global batch_f_lines
+    # a = os.system(c)
+    # return a
+    batch_f_lines.append(c)
 
-run("mkdir -p n_sim")
-
+a = os.system("mkdir -p n_sim")
 
 ci = 0
 n_sim = 1
-HzRs = [0.5 + (i/10.) for i in range(0, 10)]
-sizeFs = [1. + (0.1 * i) for i in range(0, 5)]
-mFs = [0.5 + (0.1 * i) for i in range(0, 10)]
+HzRs = [0.5 + (i/10.) for i in range(0, 15)]
+sizeFs = [1. + (0.1 * i) for i in range(0, 10)]
+mFs = [0.5 + (0.1 * i) for i in range(0, 15)]
 total = len(HzRs) * len(sizeFs) * len(mFs)
 
 t0 = time.time()
@@ -35,5 +38,6 @@ for HzR in HzRs:
             eta = secs_per_i * (total - ci)
 
             print("% complete: " + str(100. * ci / total) + " eta: " + str(eta) + " s")
-            
 
+batch_f.write(("\n".join([x.strip() for x in batch_f_lines])).encode())
+batch_f.close()

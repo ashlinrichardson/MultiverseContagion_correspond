@@ -2,10 +2,12 @@
 .. should have a switch between video and interactive mode!'''
 
 INTERACTIVE_MODE = True
+RGB_COVIDSIM = True # False # True # False: rgb coloring from SIR coeff instead of covidsim coeff..
 ANIMATION_MODE = not INTERACTIVE_MODE # disable user input to plot a video!
 
 import os
 import sys
+import math
 import numpy as np
 import matplotlib as mp
 import matplotlib.pyplot as plt
@@ -25,7 +27,8 @@ mp.rcParams['ytick.color'] = COLOR
 
 lines = [x.strip() for x in open("data.dat").readlines()]
 # lines = [x.strip() for x in os.popen("head -50 data.dat").readlines()]  # low data volume for testing
-curve, covid, sirps = [], [], []
+curve, covid, sirps, curve_sir = [], [], [], []
+n_covid, n_sir = None, None
 fig, ax = None, None
 ci = 0
 for line in lines:
@@ -34,13 +37,20 @@ for line in lines:
         continue
     w = line.split(",")
 
+    # print("ci", ci, w)
     csi = [float(x) for x in w[0:3]]
     sir = [float(x) for x in w[3:6]]
-    cur = [float(x) for x in w[7:]]
+
+    n_covid = int(w[6])
+    n_sir   = int(w[7])
+
+    cur = [float(x) for x in w[8: 8 + n_covid]]
+    cur_sir = [float(x) for x in w[8 + n_covid: 8 + n_covid + n_sir]]
 
     curve.append(cur)
     covid.append(csi)
     sirps.append(sir)
+    curve_sir.append(cur_sir)
 
 if False:  # remember to revisit this again..embedding on the raw curves (would want to label with the other coords..)
     X = np.array([x for x in curve])
@@ -54,20 +64,42 @@ if False:  # remember to revisit this again..embedding on the raw curves (would 
 
 if True:
     dx = [covid[i] + sirps[i] for i in range(len(covid))]
+    # dx = [curve[i] + curve_sir[i] for i in range(len(covid))]
     X = np.array(dx)
     X = TSNE(n_components=3, verbose=True).fit_transform(X) # print(X.shape)
     n = X.shape[0]
     N = range(n)
-    rgb = [covid[i] for i in N]
-    r_min = min(np.array([covid[i][0] for i in N]))
-    r_max = max(np.array([covid[i][0] for i in N]))
-    g_min = min(np.array([covid[i][1] for i in N]))
-    g_max = max(np.array([covid[i][1] for i in N]))
-    b_min = min(np.array([covid[i][2] for i in N]))
-    b_max = max(np.array([covid[i][2] for i in N]))
-    rgb = [[(rgb[i][0] - r_min) / (r_max - r_min), 
-            (rgb[i][1] - g_min) / (g_max - g_min), 
-            (rgb[i][2] - b_min) / (b_max - b_min)] for i in N]
+    use = covid if RGB_COVIDSIM else sirps
+    rgb = [use[i] for i in N]
+
+    reds = np.array([use[i][0] for i in N])
+    blus = np.array([use[i][1] for i in N])
+    grns = np.array([use[i][2] for i in N])
+    reds.sort()
+    blus.sort()
+    grns.sort()
+
+    p2i = int(.5 + math.floor(0.005 * len(N)))
+
+    r_min = reds[p2i]
+    r_max = reds[len(N) - p2i - 1]
+    b_min = blus[p2i]
+    b_max = blus[len(N) - p2i - 1]
+    g_min = grns[p2i]
+    g_max = grns[len(N) - p2i - 1]
+    # r_min = min(np.array([use[i][0] for i in N]))
+    # r_max = max(np.array([use[i][0] for i in N]))
+    # g_min = min(np.array([use[i][1] for i in N]))
+    # g_max = max(np.array([use[i][1] for i in N]))
+    # b_min = min(np.array([use[i][2] for i in N]))
+    # b_max = max(np.array([use[i][2] for i in N]))
+    print("rmin", r_min, "rmax", r_max)
+    print("gmin", g_min, "gmax", g_max)
+    print("bmin", b_min, "bmax", b_max)
+
+    rgb = [[max(0., min(1., (rgb[i][0] - r_min) / (r_max - r_min))), 
+            max(0., min(1., (rgb[i][1] - g_min) / (g_max - g_min))), 
+            max(0., min(1., (rgb[i][2] - b_min) / (b_max - b_min)))] for i in N]
 
     if ANIMATION_MODE:
         fig = plt.figure(figsize=(16, 9), tight_layout=True, dpi=300)
@@ -91,12 +123,16 @@ if True:
         ax[1].clear()
         i = event.ind
         print("pick:", i)
+        ci = 0
         for x in i:
             print("covid", covid[x], "sirps", sirps[x]) # print("\t", curve[x])
             var = ['HzR', 'sizF', 'mF', 'bta', 'gama', 'R0']
             dta = [str(round(q,4)) for q in (covid[x] + sirps[x])]
             print("curve", curve[x])
-            ax[1].plot(curve[x], label=' '.join([var[q] + '=' + dta[q] for q in range(len(var))])) #     + ', '.join())
+            cols = ['b', 'r', 'g', 'c', 'm', 'y', 'k']
+            ax[1].plot(curve[x], label=' '.join([var[q] + '=' + dta[q] for q in range(len(var))]), color=cols[ci]) #     + ', '.join())
+            ax[1].plot(curve_sir[x], label=' '.join([var[q] + '=' + dta[q] for q in range(len(var))]) + "(sir fit)", color=cols[ci], linestyle='--')
+            ci += 1
         ax[1].legend()
         ax[1].set_ylim([0, 500])
         plt.draw()
