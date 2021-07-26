@@ -8,6 +8,7 @@ ANIMATION_MODE = not INTERACTIVE_MODE # disable user input to plot a video!
 import os
 import sys
 import math
+import pickle
 import numpy as np
 import matplotlib as mp
 import matplotlib.pyplot as plt
@@ -66,7 +67,11 @@ if True:
     dx = [covid[i] + sirps[i] for i in range(len(covid))]
     # dx = [curve[i] + curve_sir[i] for i in range(len(covid))]
     X = np.array(dx)
-    X = TSNE(n_components=3, verbose=True).fit_transform(X) # print(X.shape)
+    if not os.path.exists('tsne.dat'):
+        X = TSNE(n_components=3, verbose=True).fit_transform(X) # print(X.shape)
+        pickle.dump(X, open('tsne.dat', 'wb'))
+    else:
+        X = pickle.load(open('tsne.dat', 'rb')) 
     n = X.shape[0]
     N = range(n)
     use = covid if RGB_COVIDSIM else sirps
