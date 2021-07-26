@@ -69,8 +69,10 @@ if True:
     X = np.array(dx)
     if not os.path.exists('tsne.dat'):
         X = TSNE(n_components=3, verbose=True).fit_transform(X) # print(X.shape)
+        print("save tSNE..")
         pickle.dump(X, open('tsne.dat', 'wb'))
     else:
+        print("reload tSNE..")
         X = pickle.load(open('tsne.dat', 'rb')) 
     n = X.shape[0]
     N = range(n)
