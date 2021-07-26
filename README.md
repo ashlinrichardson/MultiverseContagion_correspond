@@ -1,5 +1,11 @@
 # MultiverseContagion_correspond
 
+python3 write_csv_run_grid.py
+
+python3 plot_grid.py
+
+# bak
+
 ```
 python3 write_csv_run.py # use this to generate multiple runs of CovidSIM
 ```
