@@ -51,6 +51,8 @@ for line in lines:
     covid.append(csi)
     sirps.append(sir)
     curve_sir.append(cur_sir)
+print("covid", covid)
+print("sirps", sirps)
 
 if False:  # remember to revisit this again..embedding on the raw curves (would want to label with the other coords..)
     X = np.array([x for x in curve])
@@ -118,7 +120,8 @@ if True:
         ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
         ax[1] = fig.add_subplot(1, 3, 2)
         axs[2] = fig.add_subplot(1,3,3) # , gridspec_kw={'width_ratios': [3, 3, 1]})
-        radio = RadioButtons(axs[2], ('x=tSNE', 'x=CovidSIM', 'x=SIR'))
+        radio = RadioButtons(axs[2], ('tsne', 'covid', 'sir'))
+        radio.on_clicked(init)
         plt.tight_layout()
         #fig, ax = plt.subplots(1, 2) # horizontal plots
     if ANIMATION_MODE:
@@ -146,7 +149,7 @@ if True:
         plt.draw()
 
 
-    def init():
+    def init(my_par=None):
         global ax
         ax0 = ax if ANIMATION_MODE else ax[0]
         if ANIMATION_MODE:
