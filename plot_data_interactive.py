@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 from sklearn.manifold import TSNE
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.widgets import RadioButtons
 
 font = {'family' : 'serif',
         'weight' : 'normal',
