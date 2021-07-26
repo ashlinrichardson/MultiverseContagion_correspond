@@ -30,6 +30,23 @@ lines = [x.strip() for x in open("data.dat").readlines()]
 curve, covid, sirps, curve_sir = [], [], [], []
 n_covid, n_sir = None, None
 fig, ax = None, None
+
+def init(my_par=None):
+    print("init..")
+    xx, yy, zz = X[:, 0], X[:, 1], X[:,2]
+
+    global ax
+    ax0 = ax if ANIMATION_MODE else ax[0]
+    if ANIMATION_MODE:
+        ax0 = plt.axes(projection='3d')
+        ax0.set_facecolor('black')
+    else:
+        ax[1].plot(curve[0])
+    ax0.scatter3D(xx, yy, zz, c=rgb, picker=True if INTERACTIVE_MODE else False)
+    if INTERACTIVE_MODE:
+        fig.canvas.mpl_connect('pick_event', on_pick)
+    return fig,
+
 ci = 0
 for line in lines:
     ci += 1
@@ -51,8 +68,8 @@ for line in lines:
     covid.append(csi)
     sirps.append(sir)
     curve_sir.append(cur_sir)
-print("covid", covid)
-print("sirps", sirps)
+# print("covid", covid)
+# print("sirps", sirps)
 
 if False:  # remember to revisit this again..embedding on the raw curves (would want to label with the other coords..)
     X = np.array([x for x in curve])
@@ -149,19 +166,10 @@ if True:
         plt.draw()
 
 
-    def init(my_par=None):
-        global ax
-        ax0 = ax if ANIMATION_MODE else ax[0]
-        if ANIMATION_MODE:
-            ax0 = plt.axes(projection='3d')
-            ax0.set_facecolor('black')
-        else:
-            ax[1].plot(curve[0])
-        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb, picker=True if INTERACTIVE_MODE else False)
-        if INTERACTIVE_MODE:
-            fig.canvas.mpl_connect('pick_event', on_pick)
-        return fig,
+
     
+    my_init = init 
+
     TF = 11  # time scaling factor
     # rotate the axes and update
     # for angle in range(0, 360):
