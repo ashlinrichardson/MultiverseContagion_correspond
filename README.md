@@ -4,6 +4,8 @@ python3 write_csv_run_grid.py
 
 python3 plot_grid.py
 
+python3 plot_data_interactive.py
+
 # bak
 
 ```
