@@ -46,4 +46,4 @@ for HzR in HzRs:
 batch_f.write(("\n".join([x.strip() for x in batch_f_lines])).encode())
 batch_f.close()
 
-a = os.system("multicore run_grid.sh 8")
+a = os.system("multicore run_grid.sh 16")
