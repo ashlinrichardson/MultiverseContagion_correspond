@@ -114,12 +114,14 @@ if True:
     else:
         # https://matplotlib.org/stable/gallery/mplot3d/subplot3d.html
         # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
-        fig = plt.figure(figsize=plt.figaspect(0.5))
-        ax =[None, None]
-        ax[0] = fig.add_subplot(1, 2, 1, projection='3d')
-        ax[1] = fig.add_subplot(1, 2, 2)
-
-
+        # fig = plt.figure(figsize=plt.figaspect(0.5))
+        fig, axs = plt.subplots(1,3,gridspec_kw={'width_ratios': [3, 1.5, .5]})
+        ax =[axs[0], axs[1]]
+        ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
+        ax[1] = fig.add_subplot(1, 3, 2)
+        axs[2] = fig.add_subplot(1,3,3) # , gridspec_kw={'width_ratios': [3, 3, 1]})
+        radio = RadioButtons(axs[2], ('x=tSNE', 'x=CovidSIM', 'x=SIR'))
+        plt.tight_layout()
         #fig, ax = plt.subplots(1, 2) # horizontal plots
     if ANIMATION_MODE:
         plt.rcParams['axes.facecolor'] = 'black'
