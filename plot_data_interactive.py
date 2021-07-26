@@ -1,10 +1,8 @@
 '''this one should be run after write_csv_run_grid.py
 .. should have a switch between video and interactive mode!'''
-
 INTERACTIVE_MODE = True
 RGB_COVIDSIM = True # False # True # False: rgb coloring from SIR coeff instead of covidsim coeff..
 ANIMATION_MODE = not INTERACTIVE_MODE # disable user input to plot a video!
-
 import os
 import sys
 import math
@@ -156,11 +154,9 @@ if True:
             ax0.set_facecolor('black')
         else:
             ax[1].plot(curve[0])
-        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb, picker=True if INTERACTIVE_MODE else False) # cmap='Greens')
-
+        ax0.scatter3D(X[:, 0], X[:, 1], X[:, 2], c=rgb, picker=True if INTERACTIVE_MODE else False)
         if INTERACTIVE_MODE:
             fig.canvas.mpl_connect('pick_event', on_pick)
-
         return fig,
     
     TF = 11  # time scaling factor
@@ -186,6 +182,3 @@ if True:
         plt.tight_layout()
         plt.show()
         # plt.savefig("tnse_2d_params.png")
-
-
-
