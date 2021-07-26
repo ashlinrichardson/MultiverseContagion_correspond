@@ -31,12 +31,40 @@ curve, covid, sirps, curve_sir = [], [], [], []
 n_covid, n_sir = None, None
 fig, ax = None, None
 
+def hscale(x):
+    xx = x.tolist()
+    xx.sort()
+    p1 = int(math.floor(0.01 * len(xx)))
+    bot, top = xx[p1], xx[-p1]
+    f = 1. / (top - bot)
+    xx = f * (x - bot)
+    xx = xx.tolist()
+    for i in range(len(xx)):
+        if xx[i] < 0.:
+            xx[i] = 0.
+        if xx[i] > 1.:
+            xx[i] = 1.
+    return np.array(xx)
+
 def init(my_par=None):
-    print("init..")
+    print("init..", my_par)
     xx, yy, zz = X[:, 0], X[:, 1], X[:,2]
+
+    if my_par == 'x_covid':
+        xx = np.array([c[0] for c in covid])
+        yy = np.array([c[1] for c in covid])
+        zz = np.array([c[2] for c in covid])
+    if my_par == 'x_sir':
+        xx = np.array([c[0] for c in sirps])
+        yy = np.array([c[1] for c in sirps])
+        zz = np.array([c[2] for c in sirps])
+        xx = hscale(xx)
+        yy = hscale(yy)
+        zz = hscale(zz)
 
     global ax
     ax0 = ax if ANIMATION_MODE else ax[0]
+    ax0.clear()
     if ANIMATION_MODE:
         ax0 = plt.axes(projection='3d')
         ax0.set_facecolor('black')
@@ -137,7 +165,7 @@ if True:
         ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
         ax[1] = fig.add_subplot(1, 3, 2)
         axs[2] = fig.add_subplot(1,3,3) # , gridspec_kw={'width_ratios': [3, 3, 1]})
-        radio = RadioButtons(axs[2], ('tsne', 'covid', 'sir'))
+        radio = RadioButtons(axs[2], ('x_tsne', 'x_covid', 'x_sir'))
         radio.on_clicked(init)
         plt.tight_layout()
         #fig, ax = plt.subplots(1, 2) # horizontal plots
