@@ -28,7 +28,7 @@ mp.rcParams['ytick.color'] = COLOR
 lines = [x.strip() for x in open("data.dat").readlines()]
 # lines = [x.strip() for x in os.popen("head -50 data.dat").readlines()]  # low data volume for testing
 curve, covid, sirps, curve_sir = [], [], [], []
-n_covid, n_sir = None, None
+n_covid, n_sir, rgb = None, None, None
 fig, ax = None, None
 
 def hscale(x):
@@ -46,16 +46,48 @@ def hscale(x):
             xx[i] = 1.
     return np.array(xx)
 
+def set_rgb(use):
+    global rgb
+    n = X.shape[0]
+    N = range(n)
+    rgb = [use[i] for i in N]
+    reds = np.array([use[i][0] for i in N])
+    blus = np.array([use[i][1] for i in N])
+    grns = np.array([use[i][2] for i in N])
+    reds.sort()
+    blus.sort()
+    grns.sort()
+
+    p2i = int(.5 + math.floor(0.01 * len(N)))
+    r_min = reds[p2i]
+    r_max = reds[len(N) - p2i - 1]
+    b_min = blus[p2i]
+    b_max = blus[len(N) - p2i - 1]
+    g_min = grns[p2i]
+    g_max = grns[len(N) - p2i - 1]
+    print("rmin", r_min, "rmax", r_max)
+    print("gmin", g_min, "gmax", g_max)
+    print("bmin", b_min, "bmax", b_max)
+    rgb = [[max(0., min(1., (rgb[i][0] - r_min) / (r_max - r_min))), 
+            max(0., min(1., (rgb[i][1] - g_min) / (g_max - g_min))), 
+            max(0., min(1., (rgb[i][2] - b_min) / (b_max - b_min)))] for i in N]
+
+
 def init(my_par=None):
+    global rgb
     print("init..", my_par)
     xx, yy, zz = X[:, 0], X[:, 1], X[:,2]
     xL, yL, zL = 'tsneX', 'tsneY', 'tsneZ'
+    n = X.shape[0]
+    N = range(n)
 
     if my_par == 'x_covid':
         xx = np.array([c[0] for c in covid])
         yy = np.array([c[1] for c in covid])
         zz = np.array([c[2] for c in covid])
         xL, yL, zL = 'HzR', 'sizeF', 'mF' 
+        set_rgb(sirps)
+
     if my_par == 'x_sir':
         xx = np.array([c[0] for c in sirps])
         yy = np.array([c[1] for c in sirps])
@@ -64,6 +96,7 @@ def init(my_par=None):
         yy = hscale(yy)
         zz = hscale(zz)
         xL, yL, zL = 'beta', 'gamma', 'R0'
+        set_rgb(covid)
 
     global ax
     ax0 = ax if ANIMATION_MODE else ax[0]
@@ -131,7 +164,6 @@ if True:
     N = range(n)
     use = covid if RGB_COVIDSIM else sirps
     rgb = [use[i] for i in N]
-
     reds = np.array([use[i][0] for i in N])
     blus = np.array([use[i][1] for i in N])
     grns = np.array([use[i][2] for i in N])
