@@ -49,11 +49,13 @@ def hscale(x):
 def init(my_par=None):
     print("init..", my_par)
     xx, yy, zz = X[:, 0], X[:, 1], X[:,2]
+    xL, yL, zL = 'tsneX', 'tsneY', 'tsneZ'
 
     if my_par == 'x_covid':
         xx = np.array([c[0] for c in covid])
         yy = np.array([c[1] for c in covid])
         zz = np.array([c[2] for c in covid])
+        xL, yL, zL = 'HzR', 'sizeF', 'mF' 
     if my_par == 'x_sir':
         xx = np.array([c[0] for c in sirps])
         yy = np.array([c[1] for c in sirps])
@@ -61,6 +63,7 @@ def init(my_par=None):
         xx = hscale(xx)
         yy = hscale(yy)
         zz = hscale(zz)
+        xL, yL, zL = 'beta', 'gamma', 'R0'
 
     global ax
     ax0 = ax if ANIMATION_MODE else ax[0]
@@ -71,8 +74,12 @@ def init(my_par=None):
     else:
         ax[1].plot(curve[0])
     ax0.scatter3D(xx, yy, zz, c=rgb, picker=True if INTERACTIVE_MODE else False)
+    ax0.set_xlabel(xL)
+    ax0.set_ylabel(yL)
+    ax0.set_zlabel(zL)
     if INTERACTIVE_MODE:
         fig.canvas.mpl_connect('pick_event', on_pick)
+    plt.show()
     return fig,
 
 ci = 0
