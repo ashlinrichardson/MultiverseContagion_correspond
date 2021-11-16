@@ -35,8 +35,14 @@ for ix in range(len(means)):
     mF = float(w[3])
 
     if not os.path.exists(bgr[ix]):
+        print("+w", bgr[ix])
         a = os.system("python3 fit_sir.py " + d)
 
+    if not os.path.exists(bgr[ix]):
+        print("abort this instance, no fit..")
+        continue
+
+    print("+r", bgr[ix])
     beta, gamma, R0 = [float(j) for j in open(bgr[ix]).read().strip().split(",")]
 
     x = [i.strip() for i in open(m).readlines()]
