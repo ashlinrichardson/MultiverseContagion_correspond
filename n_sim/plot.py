@@ -66,6 +66,9 @@ for k in range(0, len(m_f)):
     fig_n += 1
 
 
+x_f = []
+y_f = []
+
 for k in range(1, len(m_f)):
     plt.figure()
     for i in range(k):
@@ -86,6 +89,9 @@ for k in range(1, len(m_f)):
         plt.ylim([0, 7])
         plt.legend(loc="upper left")
 
+    x_f.append(k)
+    y_f.append(np.sum(np.abs(np.array(m) - np.array(m0))))
+
     plt.title("Gap between successive curves. N = 100, initial_infect = 5")
     plt.xlabel("generation")
     plt.ylabel("||N - susceptible|_t - |N- susceptible|_(t-1)||")
@@ -94,3 +100,9 @@ for k in range(1, len(m_f)):
     print("+w " + pfn)
     plt.close()
     fig_n += 1
+
+plt.figure()
+plt.title("residual")
+plt.plot(x_f, np.log(np.array(y_f) / len(y_f)))
+plt.savefig("residual.png")
+plt.close()
